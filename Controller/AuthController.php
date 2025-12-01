@@ -1,17 +1,34 @@
 <?php
 
-$_SESSION['user'] = [
-    'id'         => $user['id'],
-    'role'       => $user['role'],
-    'first_name' => $user['first_name'],
-    'last_name'  => $user['last_name'],
-];
+require_once __DIR__ . '/../models/users.php';
 
-function logout(): void
+/**
+ * Gérer le processus de connexion.
+ *
+ * @param array $postData Les données POST du formulaire de connexion.
+ * @return array Un tableau contenant le statut de la connexion et les erreurs éventuelles.
+ */
+function handleLogin(array $postData): array
 {
-    session_start();
-    $_SESSION = [];
-    session_destroy();
-    header('Location: /');
-    exit;
+    try {
+        $errors = [];
+        $email = trim($postData['email'] ?? '');
+        $password = $postData['password'] ?? '';
+
+        //Vérification des champs obligatoires et validation
+        // ...
+
+        $user = findUserByEmail($email);
+
+        // Vérification du mot de passe
+        // ...
+
+        // Authentification réussie
+        // Faire quelque chose, par exemple démarrer une session
+        // ET retourner le succès
+        return ['success' => true];
+    } catch (Exception $e) {
+        // Retourner une erreur générique
+        return ['success' => false, 'errors' => ['Une erreur est survenue lors de la connexion.']];
+    }
 }
