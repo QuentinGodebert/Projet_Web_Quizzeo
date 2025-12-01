@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -16,9 +19,15 @@ if ($role === 'admin') {
 }
 ?>
 
+<head>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title><?= $pageTitle ?? 'Quizzeo'; ?></title>
+    <link rel="icon" type="image/png" href="./assets/images/favicon.png" width="32" height="32">
+</head>
+
 <body>
     <header>
-        <nav>
+        <nav id="nav_bar">
             <ul>
                 <li><a href="./">Accueil</a></li>
                 <?php if (!$isLoggedIn): ?>

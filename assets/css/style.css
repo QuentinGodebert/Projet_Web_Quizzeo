@@ -2,5 +2,24 @@
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  color: #ffffff;
+}
+/* Nav Bar */
+#nav_bar {
+  background-color: #333;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px 0;
+}
+#nav_bar ul {
+  list-style-type: none;
+}
+#nav_bar ul li {
+  display: inline;
+}
+#nav_bar ul li a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
 }

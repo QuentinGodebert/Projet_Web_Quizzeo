@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-$pageTitle = 'Fin du quiz';
+$pageTitle = 'Déconnexion';
 require __DIR__ . '/../layout/header.php';
 ?>
 
