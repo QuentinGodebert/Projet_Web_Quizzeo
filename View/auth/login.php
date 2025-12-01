@@ -9,9 +9,6 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = handleLogin($_POST);
-
-    // Si la connexion a réussi, rediriger vers la page d'accueil
-    // Sinon, afficher les erreurs
 }
 
 ?>
