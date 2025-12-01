@@ -6,13 +6,13 @@ if (session_status() === PHP_SESSION_NONE) {
 $isLoggedIn = isset($_SESSION['user']);
 $role = $isLoggedIn ? $_SESSION['user']['role'] : null;
 
-$dashboardUrl = '/user';
+$dashboardUrl = './user';
 if ($role === 'admin') {
-    $dashboardUrl = '/admin';
+    $dashboardUrl = './admin';
 } elseif ($role === 'school') {
-    $dashboardUrl = '/school';
+    $dashboardUrl = './school';
 } elseif ($role === 'company') {
-    $dashboardUrl = '/company';
+    $dashboardUrl = './company';
 }
 ?>
 
@@ -20,12 +20,15 @@ if ($role === 'admin') {
     <header>
         <nav>
             <ul>
+                <li><a href="./">Accueil</a></li>
                 <?php if (!$isLoggedIn): ?>
-                    <li><a href="/">Se connecter</a></li>
-                    <li><a href="/register">Créer un compte</a></li>
-                <?php else: ?>
                     <li><a href="<?= $dashboardUrl ?>">Tableau de bord</a></li>
-                    <li><a href="/logout">Se déconnecter</a></li>
+                    <li><a href="./logout">Se déconnecter</a>
+
+                    <?php else: ?>
+                    <li><a href="./login">Se connecter</a></li>
+                    <li><a href="./register">Créer un compte</a></li>
+
                 <?php endif; ?>
             </ul>
         </nav>
