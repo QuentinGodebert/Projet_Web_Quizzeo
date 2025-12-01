@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/Controller/AdminController.php';
 require_once __DIR__ . '/Controller/AuthController.php';
@@ -30,6 +31,9 @@ if ($uri === '/' || $uri === '/login.php') {
     require_once __DIR__ . '/View/school/dashboard.php';
 } elseif ($uri === '/user' || $uri === '/user.php') {
     require_once __DIR__ . '/View/user/dashboard.php';
+} elseif ($uri === '/logout') {
+    require_once __DIR__ . '/Controller/AuthController.php';
+    logout();
 } else {
     echo 'Page non trouvée';
 }
