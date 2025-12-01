@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
@@ -100,4 +101,23 @@ function user_set_active(PDO $pdo, int $id, bool $isActive): int
         'id'        => $id,
         'is_active' => $isActive ? 1 : 0,
     ]);
+=======
+require_once __DIR__ . '/../config/database.php';
+
+/**
+ * Trouver un utilisateur par son email.
+ *
+ * @param string $email L'email de l'utilisateur à rechercher.
+ * @return array|null Les données de l'utilisateur ou null s'il n'existe pas.
+ */
+function findUserByEmail($email)
+{
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute(['email' => $email]);
+    $user = $stmt->fetch();
+
+    return $user ?: null;
+>>>>>>> 9b90afa6a7c99294b3b0d95c16b5660a14fc764e
 }
