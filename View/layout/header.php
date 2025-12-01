@@ -16,16 +16,18 @@ if ($role === 'admin') {
 }
 ?>
 
-<header>
-    <nav>
-        <ul>
-            <?php if (!$isLoggedIn): ?>
-                <li><a href="/">Se connecter</a></li>
-                <li><a href="/register">Créer un compte</a></li>
-            <?php else: ?>
-                <li><a href="<?= $dashboardUrl ?>">Tableau de bord</a></li>
-                <li><a href="/logout">Se déconnecter</a></li>
-            <?php endif; ?>
-        </ul>
-    </nav>
-</header>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <?php if (!$isLoggedIn): ?>
+                    <li><a href="/">Se connecter</a></li>
+                    <li><a href="/register">Créer un compte</a></li>
+                <?php else: ?>
+                    <li><a href="<?= $dashboardUrl ?>">Tableau de bord</a></li>
+                    <li><a href="/logout">Se déconnecter</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
+</body>
