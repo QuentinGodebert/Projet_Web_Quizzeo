@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../models/users.php';
+require_once __DIR__ . '/../Model/UserModel.php';
 
 /**
  * Gérer le processus de connexion.
