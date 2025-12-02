@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+$pageTitle = 'Connexion';
 require_once __DIR__ . '/../../Controller/Authcontroller.php';
 
 $email = "";
@@ -12,12 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'accueil</title>
-</head>
 
 <body>
     <?php require_once __DIR__ . '/../../View/layout/header.php'; ?>
