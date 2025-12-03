@@ -1,76 +1,78 @@
-<<?php 
-declare(strict_types=1);
+<<?php
 
-require_once __DIR__ ."/../config/config.php";
-require_once __DIR__ ."/../helpers/csrf.php";
+    declare(strict_types=1);
 
-require_once __DIR__ ."/../Model/QuizModel.php";
-require_once __DIR__ ."/../Model/QuestionModel.php";
-require_once __DIR__ ."/../Model/AnswerModel.php";
-require_once __DIR__ ."/../Model/QuizAttemptModel.php";
-require_once __DIR__ ."/../Model/QuizAttemptsAnswerModel.php";
+    require_once __DIR__ . "/../config/config.php";
+    require_once __DIR__ . "/../helpers/csrf.php";
 
-function quiz_start_controller(PDO $pdo): void {
-    if(!isset($_GET['token'])) {
-        http_response_code(400);
-        echo "token de quiz manquant.";
-        return;
-}
-$token = $_GET['token'];
+    require_once __DIR__ . "/../Model/QuizModel.php";
+    require_once __DIR__ . "/../Model/QuestionModel.php";
+    require_once __DIR__ . "/../Model/AnswerModel.php";
+    require_once __DIR__ . "/../Model/QuizAttemptModel.php";
+    require_once __DIR__ . "/../Model/QuizAttemptsAnswerModel.php";
 
-$quiz = quiz_find_by_access_token($pdo, $token);
+    function quiz_start_controller(PDO $pdo): void
+    {
+        if (!isset($_GET['token'])) {
+            http_response_code(400);
+            echo "token de quiz manquant.";
+            return;
+        }
+        $token = $_GET['token'];
 
-if (
-    !$quiz ||
-    !$quiz['is_active'] ||
-    $quiz['status'] !== "launched"
-) {
-    http_response_code(404);
-    echo "quiz introuvable.";
-    return;
-}
+        $quiz = quiz_find_by_access_token($pdo, $token);
 
-$questions = question_find_by_quiz($pdo, (int)$quiz['id']);
+        if (
+            !$quiz ||
+            !$quiz['is_active'] ||
+            $quiz['status'] !== "launched"
+        ) {
+            http_response_code(404);
+            echo "quiz introuvable.";
+            return;
+        }
 
-$choicByQuestion = [];
-foreach($questions as $question) {
-    if ($question['type'] === "qcm") {
-        $choicByQuestion[$question['id']] = 
-        choice_find_by_question($pdo, (int)$question['id']);
-    }
-}
-require __DIR__ . "/../View/quiz/start_quiz.php";
-}
+        $questions = question_find_by_quiz($pdo, (int)$quiz['id']);
 
-function quiz_submit_controller(PDO $pdo): void
-{
-    if($_SERVER['REQUEST_METHOD'] !== "POST") {
-        http_response_code(405);
-        echo "Méthode non autorisée.";
-        return;
+        $choicByQuestion = [];
+        foreach ($questions as $question) {
+            if ($question['type'] === "qcm") {
+                $choicByQuestion[$question['id']] =
+                    choice_find_by_question($pdo, (int)$question['id']);
+            }
+        }
+        require __DIR__ . "/../View/quiz/start_quiz.php";
     }
 
-    validate_csrf_or_die();
+    function quiz_submit_controller(PDO $pdo): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== "POST") {
+            http_response_code(405);
+            echo "Méthode non autorisée.";
+            return;
+        }
 
-    if(!isset($_POST['token'])) {
-        http_response_code(400);
-        echo "token de quiz manquant.";
-        return;
-    }
+        validate_csrf_or_die();
 
-    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== "user") {
-        http_response_code(403);
-        echo "Vous devez être connecté avec un compte utilisateur pour répondre.";
-        return;
-    }
+        if (!isset($_POST['token'])) {
+            http_response_code(400);
+            echo "token de quiz manquant.";
+            return;
+        }
 
-    $token = $_GET['token'];
-    $quiz = quiz_find_by_access_token($pdo, $token);
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== "user") {
+            http_response_code(403);
+            echo "Vous devez être connecté avec un compte utilisateur pour répondre.";
+            return;
+        }
 
-    if (
-        !$quiz ||
-        !$quiz['is_active'] ||
-        $quiz['status'] !== "launched"
+        $token = $_GET['token'];
+        $quiz = quiz_find_by_access_token($pdo, $token);
+
+        if (
+            !$quiz ||
+            !$quiz['is_active'] ||
+            $quiz['status'] !== "launched"
         ) {
             http_response_code(400);
             echo "Quiz introuvable ou non disponible";
@@ -96,7 +98,7 @@ function quiz_submit_controller(PDO $pdo): void
             $questionId = (int)$question['id'];
             $type = $question['type'];
             $points = (int)($question['points'] ?? 0);
-            $maxPoints += max(0,$points);
+            $maxPoints += max(0, $points);
 
             $fieldName = "question_" . $questionId;
             if ($type == "qcm") {
@@ -113,30 +115,30 @@ function quiz_submit_controller(PDO $pdo): void
                     }
 
                     quiz_attempt_answer_create_choice(
-                $pdo,
-                $attemptId,
-                $questionId,
-                $choiceId > 0 ? $choiceId : null,
-                $is_correct
-            );
-        } else {
-            $answerText = trim($_POST[$fieldName] ?? '');
+                        $pdo,
+                        $attemptId,
+                        $questionId,
+                        $choiceId > 0 ? $choiceId : null,
+                        $is_correct
+                    );
+                } else {
+                    $answerText = trim($_POST[$fieldName] ?? '');
 
-            quiz_attempt_answer_create_text(
-                $pdo,
-                $attemptId,
-                $questionId,
-                $answerText
-            );
+                    quiz_attempt_answer_create_text(
+                        $pdo,
+                        $attemptId,
+                        $questionId,
+                        $answerText
+                    );
+                }
+            }
+
+            $score = 0.0;
+            if ($maxPoints > 0) {
+                $score = round(($totalPoints / $maxPoints) * 100, 2);
+            }
+
+            quiz_attempt_complete($pdo, $attemptId, $score);
+            require __DIR__ . "/../View/quiz/end_quiz.php";
         }
     }
-
-    $score = 0.0;
-    if ($maxPoints > 0) {
-        $score = round(($totalPoints / $maxPoints) * 100, 2);
-                }
-
-    quiz_attempt_complete($pdo, $attemptId, $score);
-    require __DIR__ . "/../View/quiz/end_quiz.php";
-    
-            }}
