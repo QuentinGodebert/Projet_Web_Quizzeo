@@ -10,7 +10,7 @@ require_once __DIR__ . '/../Model/QuizAttemptModel.php';
 function requireLogin(?string $requiredRole = null): void
 {
     if (!isset($_SESSION['user'])) {
-        header('Location: /');
+        header('Location: ./');
         exit;
     }
 

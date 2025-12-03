@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+
+const APP_BASE = '/Projet_Web_Quizzeo';
 function getDatabase(): PDO
 {
     static $pdo = null;

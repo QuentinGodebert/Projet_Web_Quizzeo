@@ -1,7 +1,4 @@
 <?php
-
-session_start();
-
 class SchoolController
 {
     private $quizFile;
@@ -10,7 +7,7 @@ class SchoolController
     public function __construct()
     {
         if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] ?? null) !== 'school') {
-            header('Location: index.php?controller=auth&action=login');
+            header('Location: /');
             exit;
         }
 
