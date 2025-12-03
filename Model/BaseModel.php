@@ -1,25 +1,57 @@
 <?php
+
 declare(strict_types=1);
 
-function dbFindOne(PDO $pdo, string $sql, array $params = []): ?array
+require_once __DIR__ . '/../config/database.php';
+function dbFindOne(string $sql, array $params = []): ?array
 {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pdo = getDatabase();
 
-    return $row !== false ? $row : null;
+    try {
+        $stmt = $pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(':' . $key, $value);
+        }
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row !== false ? $row : null;
+    } catch (PDOException $e) {
+        error_log('dbFindOne error: ' . $e->getMessage());
+        return null;
+    }
 }
-function dbFindAll(PDO $pdo, string $sql, array $params = []): array
+function dbFindAll(string $sql, array $params = []): array
 {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+    $pdo = getDatabase();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(':' . $key, $value);
+        }
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    } catch (PDOException $e) {
+        error_log('dbFindAll error: ' . $e->getMessage());
+        return [];
+    }
 }
-function dbExecute(PDO $pdo, string $sql, array $params = []): int
+function dbExecute(string $sql, array $params = []): int
 {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+    $pdo = getDatabase();
 
-    return $stmt->rowCount();
+    try {
+        $stmt = $pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(':' . $key, $value);
+        }
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    } catch (PDOException $e) {
+        error_log('dbExecute error: ' . $e->getMessage());
+        return 0;
+    }
 }
