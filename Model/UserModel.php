@@ -115,3 +115,15 @@ function userSetActive(int $id, bool $isActive): bool
 
     return $stmt->rowCount() > 0;
 }
+function getAllUsers(): array
+{
+    $pdo = getDatabase();
+    $stmt = $pdo->query("SELECT id, first_name, last_name, email, role, is_active FROM users ORDER BY id DESC");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function toggleUserStatus(int $id): void
+{
+    $pdo = getDatabase();
+    $pdo->prepare("UPDATE users SET is_active = NOT is_active WHERE id = ?")->execute([$id]);
+}
