@@ -8,7 +8,6 @@ require_once __DIR__ . '/Controller/AdminController.php';
 require_once __DIR__ . '/Controller/AuthController.php';
 require_once __DIR__ . '/Controller/CompanyController.php';
 require_once __DIR__ . '/Controller/PublicController.php';
-require_once __DIR__ . '/Controller/SchoolController.php';
 require_once __DIR__ . '/Controller/QuizController.php';
 require_once __DIR__ . '/Controller/UserController.php';
 
