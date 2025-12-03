@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../Model/UserModel.php';
 
+require_once __DIR__ . '/../Model/UserModel.php';
+require_once __DIR__ . '/../config/database.php';
+
 function loginAction(): void
 {
     $email    = '';
@@ -44,16 +47,16 @@ function loginAction(): void
 
             switch ($user['role']) {
                 case 'admin':
-                    header('Location: ./admin');
+                    header('Location: ' . APP_BASE . '/admin');
                     break;
                 case 'school':
-                    header('Location: ./school');
+                    header('Location: ' . APP_BASE . '/school');
                     break;
                 case 'company':
-                    header('Location: ./company');
+                    header('Location: ' . APP_BASE . '/company');
                     break;
                 default:
-                    header('Location: ./user');
+                    header('Location: ' . APP_BASE . '/user');
             }
             exit;
         }
