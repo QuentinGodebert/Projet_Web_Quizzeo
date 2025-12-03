@@ -1,7 +1,10 @@
-<?php require __DIR__ . '/../layout/header.php'; ?>
+<?php
 
+declare(strict_types=1);
+$pageTitle = 'Tableau de bord';
+require __DIR__ . '/../layout/header.php'; ?>
 <main>
-    <h1>Dashboard Admin</h1>
+    <h1>Dashboard Administrateur</h1>
 
     <section>
         <h2>Utilisateurs</h2>
@@ -13,7 +16,7 @@
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Rôle</th>
-                    <th>Actif</th>
+                    <th>Statut</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -25,7 +28,7 @@
                         <td><?= htmlspecialchars($user['first_name']) ?></td>
                         <td><?= htmlspecialchars($user['email']) ?></td>
                         <td><?= htmlspecialchars($user['role']) ?></td>
-                        <td><?= $user['is_active'] ? '✅' : '❌' ?></td>
+                        <td><?= $user['is_active'] ? '✅ Actif' : '❌ Inactif' ?></td>
                         <td>
                             <form method="post" action="./admin/toggle-user">
                                 <input type="hidden" name="id" value="<?= $user['id'] ?>">
@@ -59,7 +62,7 @@
                         <td><?= $quiz['id'] ?></td>
                         <td><?= htmlspecialchars($quiz['title']) ?></td>
                         <td><?= htmlspecialchars($quiz['status']) ?></td>
-                        <td><?= $quiz['is_active'] ? '✅' : '❌' ?></td>
+                        <td><?= $quiz['is_active'] ? '✅ Oui' : '❌ Non' ?></td>
                         <td><?= htmlspecialchars($quiz['created_at']) ?></td>
                         <td>
                             <form method="post" action="./admin/toggle-quiz">
@@ -75,5 +78,4 @@
         </table>
     </section>
 </main>
-
 <?php require __DIR__ . '/../layout/footer.php'; ?>
