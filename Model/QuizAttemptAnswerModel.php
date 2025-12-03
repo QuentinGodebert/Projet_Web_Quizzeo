@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function quiz_attempt_answers_by_attempt(PDO $pdo, int $attemptId): array
+function quizAttemptAnswersByAttempt(PDO $pdo, int $attemptId): array
 {
     $sql = '
         SELECT qaa.*, q.intitule, q.type
@@ -13,9 +13,9 @@ function quiz_attempt_answers_by_attempt(PDO $pdo, int $attemptId): array
         ORDER BY q.ordre ASC
     ';
 
-    return db_find_all($pdo, $sql, ['attempt_id' => $attemptId]);
+    return dbFindAll($pdo, $sql, ['attempt_id' => $attemptId]);
 }
-function quiz_attempt_answer_create_choice(
+function quizAttemptAnswerCreateChoice(
     PDO $pdo,
     int $attemptId,
     int $questionId,
@@ -37,7 +37,7 @@ function quiz_attempt_answer_create_choice(
 
     return (int) $pdo->lastInsertId();
 }
-function quiz_attempt_answer_create_text(
+function quizAttemptAnswerCreateText(
     PDO $pdo,
     int $attemptId,
     int $questionId,
