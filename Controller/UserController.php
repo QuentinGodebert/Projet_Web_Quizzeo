@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/csrf.php';
 require_once __DIR__ . '/../Model/UserModel.php';
 require_once __DIR__ . '/../Model/QuizAttemptModel.php';
 
-function require_login(?string $requiredRole = null): void
+function requireLogin(?string $requiredRole = null): void
 {
     if (!isset($_SESSION['user'])) {
         header('Location: /');
@@ -20,18 +20,18 @@ function require_login(?string $requiredRole = null): void
         exit;
     }
 }
-function user_dashboard_controller(PDO $pdo): void
+function userDashboardController(PDO $pdo): void
 {
-    require_login('user');
+    requireLogin('user');
 
     $userId   = (int) $_SESSION['user']['id'];
     $attempts = quizAttemptsByUser($pdo, $userId);
 
     require __DIR__ . '/../View/user/dashboard.php';
 }
-function user_profile_controller(PDO $pdo): void
+function userProfileController(PDO $pdo): void
 {
-    require_login('user');
+    requireLogin('user');
 
     $userId = (int) $_SESSION['user']['id'];
     $user   = userFindById($pdo, $userId);

@@ -88,8 +88,8 @@ function registerAction(): void
 
         if ($password === '') {
             $errors['password'] = 'Vous devez spécifier un mot de passe.';
-        } elseif (strlen($password) < 6) {
-            $errors['password'] = 'Le mot de passe doit faire au moins 6 caractères.';
+        } elseif (strlen($password) < 5) {
+            $errors['password'] = 'Le mot de passe doit faire au moins 5 caractères.';
         }
 
         if ($first_name === '') {
@@ -113,7 +113,14 @@ function registerAction(): void
         }
         if (empty($errors)) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            user_create($role, $email, $hashedPassword, $first_name, $last_name);
+
+            userCreate(
+                $role,
+                $email,
+                $hashedPassword,
+                $first_name,
+                $last_name
+            );
 
             header('Location: ./login');
             exit;

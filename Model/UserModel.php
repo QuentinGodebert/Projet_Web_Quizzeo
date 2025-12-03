@@ -27,13 +27,14 @@ function userAllByRole(PDO $pdo, string $role): array
     return dbFindAll($pdo, $sql, ['role' => $role]);
 }
 function userCreate(
-    PDO $pdo,
     string $role,
     string $email,
-    string $password,
+    string $passwordHash,
     string $firstName,
     string $lastName
 ): int {
+    $pdo = getDatabase();
+
     $sql = '
         INSERT INTO users (role, email, password, first_name, last_name, is_active, created_at, updated_at)
         VALUES (:role, :email, :password, :first_name, :last_name, 1, NOW(), NOW())
@@ -43,7 +44,7 @@ function userCreate(
     $stmt->execute([
         'role'       => $role,
         'email'      => $email,
-        'password'   => password_hash($password, PASSWORD_BCRYPT),
+        'password'   => $passwordHash,
         'first_name' => $firstName,
         'last_name'  => $lastName,
     ]);
