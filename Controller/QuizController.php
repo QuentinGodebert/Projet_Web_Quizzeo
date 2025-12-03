@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 <?php
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/csrf.php';
+=======
+<?php 
+declare(strict_types=1);
+
+require_once __DIR__ ."/../config/database.php";
+require_once __DIR__ ."/../helpers/csrf.php";
+>>>>>>> Evann
 
 require_once __DIR__ . '/../Model/QuizModel.php';
 require_once __DIR__ . '/../Model/QuestionModel.php';
