@@ -5,7 +5,6 @@ require_once __DIR__ . '/Controller/AuthController.php';
 require_once __DIR__ . '/Controller/CompanyController.php';
 require_once __DIR__ . '/Controller/PublicController.php';
 require_once __DIR__ . '/Controller/QuizController.php';
-require_once __DIR__ . '/Controller/SchoolController.php';
 require_once __DIR__ . '/Controller/UserController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -20,7 +19,7 @@ if ($uri === '' || $uri === false) {
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-if ($uri === '/' || $uri === '/index.php') {
+if ($uri === '/') {
     require_once __DIR__ . '/View/public/home.php';
 } elseif ($uri === '/login' || $uri === '/login.php') {
     loginAction();
