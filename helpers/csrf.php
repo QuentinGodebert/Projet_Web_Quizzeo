@@ -17,6 +17,7 @@ function csrf_generate_token(): string
     return $token;
 }
 
+
 function csrf_get_token(): string
 {
     if (!isset($_SESSION[csrf_token_key()])) {
