@@ -20,7 +20,7 @@ function loginAction(): void
         }
 
         if (empty($errors)) {
-            $user = findUserByEmail($email);
+            $user = userFindByEmail($email);
 
             if (!$user || !password_verify($password, $user['password'])) {
                 $errors['email'] = 'Email ou mot de passe incorrect.';
@@ -106,7 +106,7 @@ function registerAction(): void
             $errors['role'] = 'Rôle invalide.';
         }
         if (empty($errors)) {
-            $existing = findUserByEmail($email);
+            $existing = userFindByEmail($email);
             if ($existing) {
                 $errors['email'] = 'Cet email est déjà utilisé.';
             }
