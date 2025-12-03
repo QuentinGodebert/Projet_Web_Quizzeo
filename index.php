@@ -38,7 +38,7 @@ if ($uri === '/') {
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardAction();
 } elseif ($uri === '/user' || $uri === '/user.php') {
-    userDashboardAction();
+    userDashboardController();
 } else {
     http_response_code(404);
     echo 'Page non trouvée : ' . htmlspecialchars($uri);
