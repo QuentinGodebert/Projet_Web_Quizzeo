@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/csrf.php';
 require_once __DIR__ . '/../Model/UserModel.php';
 require_once __DIR__ . '/../Model/QuizAttemptModel.php';
 
-function require_login(?string $requiredRole = null): void
+function requireLogin(?string $requiredRole = null): void
 {
     if (!isset($_SESSION['user'])) {
         header('Location: /');
@@ -20,21 +20,21 @@ function require_login(?string $requiredRole = null): void
         exit;
     }
 }
-function user_dashboard_controller(PDO $pdo): void
+function userDashboardController(): void
 {
-    require_login('user');
+    requireLogin('user');
 
-    $userId   = (int) $_SESSION['user']['id'];
-    $attempts = quizAttemptsByUser($pdo, $userId);
+    $userId = (int) $_SESSION['user']['id'];
+    $attempts = quizAttemptsByUser($userId);
 
     require __DIR__ . '/../View/user/dashboard.php';
 }
-function user_profile_controller(PDO $pdo): void
+function userProfileController(): void
 {
-    require_login('user');
+    requireLogin('user');
 
     $userId = (int) $_SESSION['user']['id'];
-    $user   = userFindById($pdo, $userId);
+    $user = userFindById($userId);
 
     if (!$user) {
         echo 'Utilisateur introuvable.';
@@ -47,11 +47,11 @@ function user_profile_controller(PDO $pdo): void
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         validate_csrf_or_die();
 
-        $email      = trim($_POST['email'] ?? '');
-        $firstName  = trim($_POST['first_name'] ?? '');
-        $lastName   = trim($_POST['last_name'] ?? '');
-        $password   = $_POST['password'] ?? '';
-        $password2  = $_POST['password_confirm'] ?? '';
+        $email = trim($_POST['email'] ?? '');
+        $firstName = trim($_POST['first_name'] ?? '');
+        $lastName = trim($_POST['last_name'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $password2 = $_POST['password_confirm'] ?? '';
 
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Veuillez saisir un email valide.';
@@ -73,27 +73,26 @@ function user_profile_controller(PDO $pdo): void
             }
         }
 
-        if (empty($errors)) {
-            if ($email !== $user['email']) {
-                $existing = userFindByEmail($pdo, $email);
-                if ($existing && (int) $existing['id'] !== $userId) {
-                    $errors['email'] = 'Cet email est déjà utilisé.';
-                }
+        if (empty($errors) && $email !== $user['email']) {
+            $existing = userFindByEmail($email);
+            if ($existing && (int) $existing['id'] !== $userId) {
+                $errors['email'] = 'Cet email est déjà utilisé.';
             }
         }
 
         if (empty($errors)) {
-            userUpdateProfile($pdo, $userId, $email, $firstName, $lastName);
+            userUpdateProfile($userId, $email, $firstName, $lastName);
 
             if ($password !== '') {
-                userUpdatePassword($pdo, $userId, $password);
+                userUpdatePassword($userId, $password);
             }
 
-            $updated = userFindById($pdo, $userId);
+            $updated = userFindById($userId);
             $_SESSION['user']['first_name'] = $updated['first_name'];
-            $_SESSION['user']['last_name']  = $updated['last_name'];
+            $_SESSION['user']['last_name'] = $updated['last_name'];
+            $_SESSION['user']['email'] = $updated['email'];
 
-            $user    = $updated;
+            $user = $updated;
             $success = true;
         }
     }
