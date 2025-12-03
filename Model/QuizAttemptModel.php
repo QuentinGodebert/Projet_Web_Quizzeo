@@ -2,66 +2,78 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/BaseModel.php';
-function quizAttemptFindById(PDO $pdo, int $id): ?array
+require_once __DIR__ . '/../config/database.php';
+function quizAttemptFindById(int $id): ?array
 {
-    $sql = 'SELECT * FROM quiz_attempts WHERE id = :id';
-    return dbFindOne($pdo, $sql, ['id' => $id]);
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('SELECT * FROM quiz_attempts WHERE id = :id');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $attempt = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $attempt ?: null;
 }
-function quizAttemptsByUser(PDO $pdo, int $userId): array
+function quizAttemptsByUser(int $userId): array
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         SELECT qa.*, q.title
         FROM quiz_attempts qa
         JOIN quizzes q ON q.id = qa.quiz_id
         WHERE qa.user_id = :user_id
         ORDER BY qa.started_at DESC
-    ';
+    ');
+    $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
 
-    return dbFindAll($pdo, $sql, ['user_id' => $userId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-function quizAttemptsByQuiz(PDO $pdo, int $quizId): array
+function quizAttemptsByQuiz(int $quizId): array
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         SELECT qa.*, u.first_name, u.last_name
         FROM quiz_attempts qa
         JOIN users u ON u.id = qa.user_id
         WHERE qa.quiz_id = :quiz_id
         ORDER BY qa.started_at DESC
-    ';
+    ');
+    $stmt->bindValue(':quiz_id', $quizId, PDO::PARAM_INT);
+    $stmt->execute();
 
-    return dbFindAll($pdo, $sql, ['quiz_id' => $quizId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-function quizAttemptStart(PDO $pdo, int $quizId, int $userId): int
+function quizAttemptStart(int $quizId, int $userId): ?int
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         INSERT INTO quiz_attempts (quiz_id, user_id, started_at, is_completed)
         VALUES (:quiz_id, :user_id, NOW(), 0)
-    ';
+    ');
+    $stmt->bindValue(':quiz_id', $quizId, PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'quiz_id' => $quizId,
-        'user_id' => $userId,
-    ]);
-
-    return (int) $pdo->lastInsertId();
+    return (int) $pdo->lastInsertId() ?: null;
 }
-function quizAttemptComplete(
-    PDO $pdo,
-    int $attemptId,
-    float $score
-): int {
-    $sql = '
+function quizAttemptComplete(int $attemptId, float $score): bool
+{
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         UPDATE quiz_attempts
         SET finished_at = NOW(),
             score = :score,
             is_completed = 1
         WHERE id = :id
-    ';
+    ');
+    $stmt->bindValue(':id', $attemptId, PDO::PARAM_INT);
+    $stmt->bindValue(':score', $score, PDO::PARAM_STR);
+    $stmt->execute();
 
-    return dbExecute($pdo, $sql, [
-        'id'    => $attemptId,
-        'score' => $score,
-    ]);
+    return $stmt->rowCount() > 0;
 }

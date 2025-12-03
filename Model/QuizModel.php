@@ -2,120 +2,132 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/BaseModel.php';
-function quizFindById(PDO $pdo, int $id): ?array
+require_once __DIR__ . '/../config/database.php';
+function quizFindById(int $id): ?array
 {
-    $sql = 'SELECT * FROM quizzes WHERE id = :id';
-    return dbFindOne($pdo, $sql, ['id' => $id]);
-}
+    $pdo = getDatabase();
 
-function quizFindByAccessToken(PDO $pdo, string $token): ?array
-{
-    $sql = 'SELECT * FROM quizzes WHERE access_token = :token';
-    return dbFindOne($pdo, $sql, ['token' => $token]);
-}
+    $stmt = $pdo->prepare('SELECT * FROM quizzes WHERE id = :id');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 
-function quizFindByOwner(PDO $pdo, int $ownerId): array
+    $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $quiz ?: null;
+}
+function quizFindByAccessToken(string $token): ?array
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('SELECT * FROM quizzes WHERE access_token = :token');
+    $stmt->bindValue(':token', $token, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $quiz ?: null;
+}
+function quizFindByOwner(int $ownerId): array
+{
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         SELECT *
         FROM quizzes
         WHERE owner_id = :owner_id
         ORDER BY created_at DESC
-    ';
+    ');
+    $stmt->bindValue(':owner_id', $ownerId, PDO::PARAM_INT);
+    $stmt->execute();
 
-    return dbFindAll($pdo, $sql, ['owner_id' => $ownerId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-
-function quizAll(PDO $pdo): array
+function quizAll(): array
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->query('
         SELECT q.*, u.first_name, u.last_name, u.role
         FROM quizzes q
         JOIN users u ON u.id = q.owner_id
         ORDER BY q.created_at DESC
-    ';
+    ');
 
-    return dbFindAll($pdo, $sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
+function quizCreate(int $ownerId, string $title, ?string $description): ?int
+{
+    $pdo = getDatabase();
 
-function quizCreate(
-    PDO $pdo,
-    int $ownerId,
-    string $title,
-    ?string $description
-): int {
     $accessToken = bin2hex(random_bytes(32));
 
-    $sql = '
+    $stmt = $pdo->prepare('
         INSERT INTO quizzes (owner_id, title, description, status, is_active, access_token, created_at, updated_at)
         VALUES (:owner_id, :title, :description, :status, 1, :access_token, NOW(), NOW())
-    ';
+    ');
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'owner_id'     => $ownerId,
-        'title'        => $title,
-        'description'  => $description,
-        'status'       => 'draft',
-        'access_token' => $accessToken,
-    ]);
+    $stmt->bindValue(':owner_id', $ownerId, PDO::PARAM_INT);
+    $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+    $stmt->bindValue(':status', 'draft', PDO::PARAM_STR);
+    $stmt->bindValue(':access_token', $accessToken, PDO::PARAM_STR);
+    $stmt->execute();
 
-    return (int) $pdo->lastInsertId();
+    return (int) $pdo->lastInsertId() ?: null;
 }
+function quizUpdate(int $id, string $title, ?string $description): bool
+{
+    $pdo = getDatabase();
 
-function quizUpdate(
-    PDO $pdo,
-    int $id,
-    string $title,
-    ?string $description
-): int {
-    $sql = '
+    $stmt = $pdo->prepare('
         UPDATE quizzes
         SET title = :title,
             description = :description,
             updated_at = NOW()
         WHERE id = :id
-    ';
+    ');
 
-    return dbExecute($pdo, $sql, [
-        'id'          => $id,
-        'title'       => $title,
-        'description' => $description,
-    ]);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
 }
-
-function quizSetStatus(PDO $pdo, int $id, string $status): int
+function quizSetStatus(int $id, string $status): bool
 {
     $allowed = ['draft', 'launched', 'finished'];
     if (!in_array($status, $allowed, true)) {
         throw new InvalidArgumentException('Statut de quiz invalide.');
     }
 
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         UPDATE quizzes
         SET status = :status,
             updated_at = NOW()
         WHERE id = :id
-    ';
+    ');
 
-    return dbExecute($pdo, $sql, [
-        'id'     => $id,
-        'status' => $status,
-    ]);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
 }
-
-function quizSetActive(PDO $pdo, int $id, bool $isActive): int
+function quizSetActive(int $id, bool $isActive): bool
 {
-    $sql = '
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
         UPDATE quizzes
         SET is_active = :is_active,
             updated_at = NOW()
         WHERE id = :id
-    ';
+    ');
 
-    return dbExecute($pdo, $sql, [
-        'id'        => $id,
-        'is_active' => $isActive ? 1 : 0,
-    ]);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':is_active', $isActive ? 1 : 0, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
 }
