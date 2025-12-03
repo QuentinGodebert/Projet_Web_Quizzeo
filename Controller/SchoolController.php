@@ -62,12 +62,12 @@ class SchoolController
                 break;
 
             default:
-                $this->dashboard();
+                $this->schoolDashboardController();
                 break;
         }
     }
 
-    public function dashboard()
+    public function schoolDashboardController()
     {
         $userId = $_SESSION['user']['id'];
         $quizzes = $this->getQuizzesByOwner($userId);

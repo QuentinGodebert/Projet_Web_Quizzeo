@@ -36,7 +36,7 @@ if ($uri === '/') {
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardAction();
 } elseif ($uri === '/school' || $uri === '/school.php') {
-    schoolDashboardAction();
+    schoolDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
 } else {
