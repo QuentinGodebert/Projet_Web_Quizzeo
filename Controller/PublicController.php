@@ -1,7 +1,4 @@
 <?php
-
-session_start();
-
 class PublicController
 {
     private string $dataDir;

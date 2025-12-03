@@ -131,3 +131,15 @@ function quizSetActive(int $id, bool $isActive): bool
 
     return $stmt->rowCount() > 0;
 }
+function getAllQuizzes(): array
+{
+    $pdo = getDatabase();
+    $stmt = $pdo->query("SELECT id, title, status, is_active, created_at FROM quizzes ORDER BY id DESC");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function toggleQuizStatus(int $id): void
+{
+    $pdo = getDatabase();
+    $pdo->prepare("UPDATE quizzes SET is_active = NOT is_active WHERE id = ?")->execute([$id]);
+}
