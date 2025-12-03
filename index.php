@@ -24,16 +24,18 @@ if ($uri === '') {
 }
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
 switch ($uri) {
     case '/home':
         require_once __DIR__ . '/View/public/home.php';
         break;
+
     case '/login':
-        require_once __DIR__ . '/View/auth/login.php';
+        loginAction();
         break;
 
     case '/register':
-        require_once __DIR__ . '/View/auth/register.php';
+        registerAction();
         break;
 
     case '/admin':
@@ -53,7 +55,6 @@ switch ($uri) {
         break;
 
     case '/logout':
-        require_once __DIR__ . '/Controller/AuthController.php';
         logout();
         break;
 
