@@ -1,14 +1,14 @@
-<<?php 
+<?php 
 declare(strict_types=1);
 
-require_once __DIR__ ."/../config/config.php";
+require_once __DIR__ ."/../config/database.php";
 require_once __DIR__ ."/../helpers/csrf.php";
 
 require_once __DIR__ ."/../Model/QuizModel.php";
 require_once __DIR__ ."/../Model/QuestionModel.php";
 require_once __DIR__ ."/../Model/AnswerModel.php";
 require_once __DIR__ ."/../Model/QuizAttemptModel.php";
-require_once __DIR__ ."/../Model/QuizAttemptsAnswerModel.php";
+require_once __DIR__ ."/../Model/QuizAttemptAnswerModel.php";
 
 function quiz_start_controller(PDO $pdo): void {
     if(!isset($_GET['token'])) {
@@ -18,7 +18,7 @@ function quiz_start_controller(PDO $pdo): void {
 }
 $token = $_GET['token'];
 
-$quiz = quiz_find_by_access_token($pdo, $token);
+$quiz = quizFindByAccessToken($pdo, $token);
 
 if (
     !$quiz ||
@@ -30,13 +30,13 @@ if (
     return;
 }
 
-$questions = question_find_by_quiz($pdo, (int)$quiz['id']);
+$questions = questionFindByQuiz($pdo, (int)$quiz['id']);
 
 $choicByQuestion = [];
 foreach($questions as $question) {
     if ($question['type'] === "qcm") {
         $choicByQuestion[$question['id']] = 
-        choice_find_by_question($pdo, (int)$question['id']);
+        choiceFindByQuestion($pdo, (int)$question['id']);
     }
 }
 require __DIR__ . "/../View/quiz/start_quiz.php";
@@ -65,7 +65,7 @@ function quiz_submit_controller(PDO $pdo): void
     }
 
     $token = $_GET['token'];
-    $quiz = quiz_find_by_access_token($pdo, $token);
+    $quiz = quizFindByAccessToken($pdo, $token);
 
     if (
         !$quiz ||
@@ -79,7 +79,7 @@ function quiz_submit_controller(PDO $pdo): void
 
         $userId = (int)$_SESSION['user']['id'];
         $quizId = (int)$quiz['id'];
-        $questions = question_find_by_quiz($pdo, $quizId);
+        $questions = questionFindByQuiz($pdo, $quizId);
 
         if (empty($questions)) {
             http_response_code(400);
@@ -87,7 +87,7 @@ function quiz_submit_controller(PDO $pdo): void
             return;
         }
 
-        $attemptId = quiz_attempt_start($pdo, $quizId, $userId);
+        $attemptId = quizAttemptStart($pdo, $quizId, $userId);
 
         $totalPoints = 0;
         $maxPoints = 0;
@@ -103,7 +103,7 @@ function quiz_submit_controller(PDO $pdo): void
                 $choiceId = isset($_POST[$fieldName]) ? (int)$_POST[$fieldName] : 0;
                 $is_correct = null;
                 if ($choiceId > 0) {
-                    $choice = choice_find_by_id($pdo, $choiceId);
+                    $choice = choiceFindById($pdo, $choiceId);
                     if ($choice && (int)$choice['question_id'] === $questionId) {
                         $is_correct = $choice && (int) $choice['is_correct'] === 1;
 
@@ -112,7 +112,7 @@ function quiz_submit_controller(PDO $pdo): void
                         }
                     }
 
-                    quiz_attempt_answer_create_choice(
+                    quizAttemptAnswerCreateChoice(
                 $pdo,
                 $attemptId,
                 $questionId,
@@ -122,7 +122,7 @@ function quiz_submit_controller(PDO $pdo): void
         } else {
             $answerText = trim($_POST[$fieldName] ?? '');
 
-            quiz_attempt_answer_create_text(
+            quizAttemptAnswerCreateText(
                 $pdo,
                 $attemptId,
                 $questionId,
@@ -136,7 +136,7 @@ function quiz_submit_controller(PDO $pdo): void
         $score = round(($totalPoints / $maxPoints) * 100, 2);
                 }
 
-    quiz_attempt_complete($pdo, $attemptId, $score);
+    quizAttemptComplete($pdo, $attemptId, $score);
     require __DIR__ . "/../View/quiz/end_quiz.php";
     
             }}

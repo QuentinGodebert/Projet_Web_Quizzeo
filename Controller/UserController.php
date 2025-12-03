@@ -25,7 +25,7 @@ function user_dashboard_controller(PDO $pdo): void
     require_login('user');
 
     $userId   = (int) $_SESSION['user']['id'];
-    $attempts = quiz_attempts_by_user($pdo, $userId);
+    $attempts = quizAttemptsByUser($pdo, $userId);
 
     require __DIR__ . '/../View/user/dashboard.php';
 }
@@ -34,7 +34,7 @@ function user_profile_controller(PDO $pdo): void
     require_login('user');
 
     $userId = (int) $_SESSION['user']['id'];
-    $user   = user_find_by_id($pdo, $userId);
+    $user   = userFindById($pdo, $userId);
 
     if (!$user) {
         echo 'Utilisateur introuvable.';
@@ -75,7 +75,7 @@ function user_profile_controller(PDO $pdo): void
 
         if (empty($errors)) {
             if ($email !== $user['email']) {
-                $existing = user_find_by_email($pdo, $email);
+                $existing = userFindByEmail($pdo, $email);
                 if ($existing && (int) $existing['id'] !== $userId) {
                     $errors['email'] = 'Cet email est déjà utilisé.';
                 }
@@ -83,13 +83,13 @@ function user_profile_controller(PDO $pdo): void
         }
 
         if (empty($errors)) {
-            user_update_profile($pdo, $userId, $email, $firstName, $lastName);
+            userUpdateProfile($pdo, $userId, $email, $firstName, $lastName);
 
             if ($password !== '') {
-                user_update_password($pdo, $userId, $password);
+                userUpdatePassword($pdo, $userId, $password);
             }
 
-            $updated = user_find_by_id($pdo, $userId);
+            $updated = userFindById($pdo, $userId);
             $_SESSION['user']['first_name'] = $updated['first_name'];
             $_SESSION['user']['last_name']  = $updated['last_name'];
 

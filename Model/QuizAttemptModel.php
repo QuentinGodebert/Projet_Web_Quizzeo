@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function quiz_attempt_find_by_id(PDO $pdo, int $id): ?array
+function quizAttemptFindById(PDO $pdo, int $id): ?array
 {
     $sql = 'SELECT * FROM quiz_attempts WHERE id = :id';
-    return db_find_one($pdo, $sql, ['id' => $id]);
+    return dbFindOne($pdo, $sql, ['id' => $id]);
 }
-function quiz_attempts_by_user(PDO $pdo, int $userId): array
+function quizAttemptsByUser(PDO $pdo, int $userId): array
 {
     $sql = '
         SELECT qa.*, q.title
@@ -18,9 +18,9 @@ function quiz_attempts_by_user(PDO $pdo, int $userId): array
         ORDER BY qa.started_at DESC
     ';
 
-    return db_find_all($pdo, $sql, ['user_id' => $userId]);
+    return dbFindAll($pdo, $sql, ['user_id' => $userId]);
 }
-function quiz_attempts_by_quiz(PDO $pdo, int $quizId): array
+function quizAttemptsByQuiz(PDO $pdo, int $quizId): array
 {
     $sql = '
         SELECT qa.*, u.first_name, u.last_name
@@ -30,9 +30,9 @@ function quiz_attempts_by_quiz(PDO $pdo, int $quizId): array
         ORDER BY qa.started_at DESC
     ';
 
-    return db_find_all($pdo, $sql, ['quiz_id' => $quizId]);
+    return dbFindAll($pdo, $sql, ['quiz_id' => $quizId]);
 }
-function quiz_attempt_start(PDO $pdo, int $quizId, int $userId): int
+function quizAttemptStart(PDO $pdo, int $quizId, int $userId): int
 {
     $sql = '
         INSERT INTO quiz_attempts (quiz_id, user_id, started_at, is_completed)
@@ -47,7 +47,7 @@ function quiz_attempt_start(PDO $pdo, int $quizId, int $userId): int
 
     return (int) $pdo->lastInsertId();
 }
-function quiz_attempt_complete(
+function quizAttemptComplete(
     PDO $pdo,
     int $attemptId,
     float $score
@@ -60,7 +60,7 @@ function quiz_attempt_complete(
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'    => $attemptId,
         'score' => $score,
     ]);

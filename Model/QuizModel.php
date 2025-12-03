@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function quiz_find_by_id(PDO $pdo, int $id): ?array
+function quizFindById(PDO $pdo, int $id): ?array
 {
     $sql = 'SELECT * FROM quizzes WHERE id = :id';
-    return db_find_one($pdo, $sql, ['id' => $id]);
+    return dbFindOne($pdo, $sql, ['id' => $id]);
 }
 
-function quiz_find_by_access_token(PDO $pdo, string $token): ?array
+function quizFindByAccessToken(PDO $pdo, string $token): ?array
 {
     $sql = 'SELECT * FROM quizzes WHERE access_token = :token';
-    return db_find_one($pdo, $sql, ['token' => $token]);
+    return dbFindOne($pdo, $sql, ['token' => $token]);
 }
 
-function quiz_find_by_owner(PDO $pdo, int $ownerId): array
+function quizFindByOwner(PDO $pdo, int $ownerId): array
 {
     $sql = '
         SELECT *
@@ -24,10 +24,10 @@ function quiz_find_by_owner(PDO $pdo, int $ownerId): array
         ORDER BY created_at DESC
     ';
 
-    return db_find_all($pdo, $sql, ['owner_id' => $ownerId]);
+    return dbFindAll($pdo, $sql, ['owner_id' => $ownerId]);
 }
 
-function quiz_all(PDO $pdo): array
+function quizAll(PDO $pdo): array
 {
     $sql = '
         SELECT q.*, u.first_name, u.last_name, u.role
@@ -36,10 +36,10 @@ function quiz_all(PDO $pdo): array
         ORDER BY q.created_at DESC
     ';
 
-    return db_find_all($pdo, $sql);
+    return dbFindAll($pdo, $sql);
 }
 
-function quiz_create(
+function quizCreate(
     PDO $pdo,
     int $ownerId,
     string $title,
@@ -64,7 +64,7 @@ function quiz_create(
     return (int) $pdo->lastInsertId();
 }
 
-function quiz_update(
+function quizUpdate(
     PDO $pdo,
     int $id,
     string $title,
@@ -78,14 +78,14 @@ function quiz_update(
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'          => $id,
         'title'       => $title,
         'description' => $description,
     ]);
 }
 
-function quiz_set_status(PDO $pdo, int $id, string $status): int
+function quizSetStatus(PDO $pdo, int $id, string $status): int
 {
     $allowed = ['draft', 'launched', 'finished'];
     if (!in_array($status, $allowed, true)) {
@@ -99,13 +99,13 @@ function quiz_set_status(PDO $pdo, int $id, string $status): int
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'     => $id,
         'status' => $status,
     ]);
 }
 
-function quiz_set_active(PDO $pdo, int $id, bool $isActive): int
+function quizSetActive(PDO $pdo, int $id, bool $isActive): int
 {
     $sql = '
         UPDATE quizzes
@@ -114,7 +114,7 @@ function quiz_set_active(PDO $pdo, int $id, bool $isActive): int
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'        => $id,
         'is_active' => $isActive ? 1 : 0,
     ]);

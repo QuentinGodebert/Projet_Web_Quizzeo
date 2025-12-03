@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function question_find_by_id(PDO $pdo, int $id): ?array
+function questionFindById(PDO $pdo, int $id): ?array
 {
     $sql = 'SELECT * FROM questions WHERE id = :id';
-    return db_find_one($pdo, $sql, ['id' => $id]);
+    return dbFindOne($pdo, $sql, ['id' => $id]);
 }
-function question_find_by_quiz(PDO $pdo, int $quizId): array
+function questionFindByQuiz(PDO $pdo, int $quizId): array
 {
     $sql = '
         SELECT *
@@ -17,9 +17,9 @@ function question_find_by_quiz(PDO $pdo, int $quizId): array
         ORDER BY ordre ASC
     ';
 
-    return db_find_all($pdo, $sql, ['quiz_id' => $quizId]);
+    return dbFindAll($pdo, $sql, ['quiz_id' => $quizId]);
 }
-function question_create(
+function questionCreate(
     PDO $pdo,
     int $quizId,
     string $intitule,
@@ -43,7 +43,7 @@ function question_create(
 
     return (int) $pdo->lastInsertId();
 }
-function question_update(
+function questionUpdate(
     PDO $pdo,
     int $id,
     string $intitule,
@@ -60,7 +60,7 @@ function question_update(
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'       => $id,
         'intitule' => $intitule,
         'type'     => $type,
@@ -68,8 +68,8 @@ function question_update(
         'ordre'    => $ordre,
     ]);
 }
-function question_delete(PDO $pdo, int $id): int
+function questionDelete(PDO $pdo, int $id): int
 {
     $sql = 'DELETE FROM questions WHERE id = :id';
-    return db_execute($pdo, $sql, ['id' => $id]);
+    return dbExecute($pdo, $sql, ['id' => $id]);
 }
