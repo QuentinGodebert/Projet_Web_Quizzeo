@@ -2,8 +2,10 @@
     RewriteEngine On
     RewriteBase /Projet_Web_Quizzeo/
 
+    # Ne réécrit pas si c'est un vrai fichier ou dossier
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
-    RewriteRule ^ index.php [L]
+    # Tout le reste va vers index.php
+    RewriteRule ^ index.php [QSA,L]
 </IfModule>
