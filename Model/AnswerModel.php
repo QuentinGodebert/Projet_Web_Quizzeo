@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function choice_find_by_id(PDO $pdo, int $id): ?array
+function choiceFindById(PDO $pdo, int $id): ?array
 {
     $sql = 'SELECT * FROM choices WHERE id = :id';
-    return db_find_one($pdo, $sql, ['id' => $id]);
+    return dbFindOne($pdo, $sql, ['id' => $id]);
 }
 
-function choice_find_by_question(PDO $pdo, int $questionId): array
+function choiceFindByQuestion(PDO $pdo, int $questionId): array
 {
     $sql = '
         SELECT *
@@ -18,9 +18,9 @@ function choice_find_by_question(PDO $pdo, int $questionId): array
         ORDER BY ordre ASC
     ';
 
-    return db_find_all($pdo, $sql, ['question_id' => $questionId]);
+    return dbFindAll($pdo, $sql, ['question_id' => $questionId]);
 }
-function choice_create(
+function choiceCreate(
     PDO $pdo,
     int $questionId,
     string $libelle,
@@ -42,7 +42,7 @@ function choice_create(
 
     return (int) $pdo->lastInsertId();
 }
-function choice_update(
+function choiceUpdate(
     PDO $pdo,
     int $id,
     string $libelle,
@@ -57,15 +57,15 @@ function choice_update(
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'         => $id,
         'libelle'    => $libelle,
         'is_correct' => $isCorrect ? 1 : 0,
         'ordre'      => $ordre,
     ]);
 }
-function choice_delete(PDO $pdo, int $id): int
+function choiceDelete(PDO $pdo, int $id): int
 {
     $sql = 'DELETE FROM choices WHERE id = :id';
-    return db_execute($pdo, $sql, ['id' => $id]);
+    return dbExecute($pdo, $sql, ['id' => $id]);
 }

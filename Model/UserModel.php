@@ -2,30 +2,30 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
-function user_find_by_id(PDO $pdo, int $id): ?array
+function userFindById(PDO $pdo, int $id): ?array
 {
     $sql = 'SELECT * FROM users WHERE id = :id';
-    return db_find_one($pdo, $sql, ['id' => $id]);
+    return dbFindOne($pdo, $sql, ['id' => $id]);
 }
 
-function user_find_by_email(PDO $pdo, string $email): ?array
+function userFindByEmail(PDO $pdo, string $email): ?array
 {
     $sql = 'SELECT * FROM users WHERE email = :email';
-    return db_find_one($pdo, $sql, ['email' => $email]);
+    return dbFindOne($pdo, $sql, ['email' => $email]);
 }
 
-function user_all(PDO $pdo): array
+function userAll(PDO $pdo): array
 {
     $sql = 'SELECT * FROM users ORDER BY created_at DESC';
-    return db_find_all($pdo, $sql);
+    return dbFindAll($pdo, $sql);
 }
 
-function user_all_by_role(PDO $pdo, string $role): array
+function userAllByRole(PDO $pdo, string $role): array
 {
     $sql = 'SELECT * FROM users WHERE role = :role ORDER BY created_at DESC';
-    return db_find_all($pdo, $sql, ['role' => $role]);
+    return dbFindAll($pdo, $sql, ['role' => $role]);
 }
-function user_create(
+function userCreate(
     PDO $pdo,
     string $role,
     string $email,
@@ -49,7 +49,7 @@ function user_create(
 
     return (int) $pdo->lastInsertId();
 }
-function user_update_profile(
+function userUpdateProfile(
     PDO $pdo,
     int $id,
     string $email,
@@ -65,14 +65,14 @@ function user_update_profile(
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'         => $id,
         'email'      => $email,
         'first_name' => $firstName,
         'last_name'  => $lastName,
     ]);
 }
-function user_update_password(PDO $pdo, int $id, string $newPassword): int
+function userUpdatePassword(PDO $pdo, int $id, string $newPassword): int
 {
     $sql = '
         UPDATE users
@@ -81,12 +81,12 @@ function user_update_password(PDO $pdo, int $id, string $newPassword): int
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'       => $id,
         'password' => password_hash($newPassword, PASSWORD_BCRYPT),
     ]);
 }
-function user_set_active(PDO $pdo, int $id, bool $isActive): int
+function userSetActive(PDO $pdo, int $id, bool $isActive): int
 {
     $sql = '
         UPDATE users
@@ -95,7 +95,7 @@ function user_set_active(PDO $pdo, int $id, bool $isActive): int
         WHERE id = :id
     ';
 
-    return db_execute($pdo, $sql, [
+    return dbExecute($pdo, $sql, [
         'id'        => $id,
         'is_active' => $isActive ? 1 : 0,
     ]);
