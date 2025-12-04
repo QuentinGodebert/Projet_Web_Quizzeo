@@ -53,7 +53,7 @@ function quizAll(): array
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-function quizCreate(int $ownerId, string $title, ?string $description): ?int
+function createQuiz(int $ownerId, string $title, ?string $description): ?int
 {
     $pdo = getDatabase();
 
@@ -142,11 +142,11 @@ function toggleQuizStatus(int $id): void
 {
     $pdo = getDatabase();
     $pdo->prepare("UPDATE quizzes SET is_active = NOT is_active WHERE id = ?")->execute([$id]);
-} function quizCreate(int $ownerId, string $title, ?string $description): bool
+}
+function quizCreate(int $ownerId, string $title, ?string $description): bool
 {
     $pdo = getDatabase();
 
 
     return createQuiz($pdo, $title, $description ?? '', $ownerId);
 }
-
