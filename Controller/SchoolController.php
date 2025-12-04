@@ -109,4 +109,25 @@ function schoolQuizResultController(): void
 
     require __DIR__ . '/../View/school/quiz_result.php';
 }
+require_once __DIR__ . '/../Model/QuizModel.php';
 
+function schoolQuizLaunchController(): void
+{
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'school') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $ownerId = (int)$_SESSION['user']['id'];
+    $id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+    if ($id <= 0) {
+        header('Location: ' . APP_BASE . '/school');
+        exit;
+    }
+
+    publishQuiz($id, $ownerId);
+
+    header('Location: ' . APP_BASE . '/school');
+    exit;
+}

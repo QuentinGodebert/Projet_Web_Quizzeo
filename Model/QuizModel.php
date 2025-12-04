@@ -147,3 +147,46 @@ function quizCreate(int $ownerId, string $title, ?string $description): bool
 {
     return createQuiz($ownerId, $title, $description) !== null;
 }
+function getPublishedQuizzes(): array
+{
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
+        SELECT id,
+               title,
+               description,
+               status,
+               access_token,
+               created_at,
+               updated_at
+        FROM quizzes
+        WHERE status = :status
+          AND is_active = 1
+        ORDER BY created_at DESC
+    ');
+
+    $stmt->execute([
+        ':status' => 'published',
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+}
+function publishQuiz(int $id, int $ownerId): bool
+{
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare('
+        UPDATE quizzes
+        SET status = :status,
+            updated_at = NOW()
+        WHERE id = :id
+          AND owner_id = :owner_id
+          AND is_active = 1
+    ');
+
+    return $stmt->execute([
+        ':status'   => 'published',
+        ':id'       => $id,
+        ':owner_id' => $ownerId,
+    ]);
+}

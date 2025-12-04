@@ -158,4 +158,25 @@ function companyQuizEditController(): void
 
 function companyQuizResultsController(): void {}
 
-function companyQuizLaunchController(): void {}
+require_once __DIR__ . '/../Model/QuizModel.php';
+
+function companyQuizLaunchController(): void
+{
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $ownerId = (int)$_SESSION['user']['id'];
+    $id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+    if ($id <= 0) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    publishQuiz($id, $ownerId);
+
+    header('Location: ' . APP_BASE . '/company');
+    exit;
+}
