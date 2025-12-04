@@ -8,11 +8,11 @@ function getQuestionsByQuizId(int $quizId): array
     $pdo = getDatabase();
 
     $stmt = $pdo->prepare('
-        SELECT id, quiz_id, label, points, created_at, updated_at
-        FROM questions
-        WHERE quiz_id = :quiz_id
-        ORDER BY id ASC
-    ');
+    SELECT id, quiz_id, label, points, created_at, updated_at
+    FROM questions
+    WHERE quiz_id = :quiz_id
+    ORDER BY id ASC
+');
     $stmt->execute([':quiz_id' => $quizId]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];

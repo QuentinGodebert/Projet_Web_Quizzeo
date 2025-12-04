@@ -198,11 +198,12 @@ function companyQuestionsController(): void
         exit;
     }
 
-    $quiz = getQuizById($quizId, $ownerId);
+    $quiz = quizFindById($quizId, $ownerId);
     if (!$quiz) {
-        header('Location: ' . APP_BASE . '/company');
+        header('Location: ' . APP_BASE . '/company/dashboard');
         exit;
     }
+
 
     $questions = getQuestionsByQuizId($quizId);
 
@@ -282,11 +283,6 @@ function companyQuestionEditController(): void
         exit;
     }
 
-    $question = getQuestionById($id, $quizId);
-    if (!$question) {
-        header('Location: ' . APP_BASE . '/company/questions?quiz_id=' . $quizId);
-        exit;
-    }
 
     $errors = [];
 

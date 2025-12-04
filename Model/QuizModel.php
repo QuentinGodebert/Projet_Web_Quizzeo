@@ -3,17 +3,28 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
-function quizFindById(int $id): ?array
+function quizFindById(int $id, ?int $ownerId = null): ?array
 {
     $pdo = getDatabase();
 
-    $stmt = $pdo->prepare('SELECT * FROM quizzes WHERE id = :id');
+    $sql = 'SELECT * FROM quizzes WHERE id = :id';
+    if ($ownerId !== null) {
+        $sql .= ' AND owner_id = :owner_id';
+    }
+
+    $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+    if ($ownerId !== null) {
+        $stmt->bindValue(':owner_id', $ownerId, PDO::PARAM_INT);
+    }
+
     $stmt->execute();
 
     $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
     return $quiz ?: null;
 }
+
 function quizFindByAccessToken(string $token): ?array
 {
     $pdo = getDatabase();
