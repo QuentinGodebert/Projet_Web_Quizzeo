@@ -23,8 +23,9 @@ if ($uri === '' || $uri === false) {
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($uri === '/') {
-    require_once __DIR__ . '/View/public/home.php';
-} elseif ($uri === '/login' || $uri === '/login.php') {
+    publicHomeController();
+}
+ elseif ($uri === '/login' || $uri === '/login.php') {
     loginAction();
 } elseif ($uri === '/register' || $uri === '/register.php') {
     registerAction();

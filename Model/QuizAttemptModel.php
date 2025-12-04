@@ -46,7 +46,7 @@ function quizAttemptsByQuiz(int $quizId): array
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-function quizAttemptStart(int $quizId, int $userId): ?int
+function quizAttemptStart(int $quizId, int $userId): int
 {
     $pdo = getDatabase();
 
@@ -54,12 +54,14 @@ function quizAttemptStart(int $quizId, int $userId): ?int
         INSERT INTO quiz_attempts (quiz_id, user_id, started_at, is_completed)
         VALUES (:quiz_id, :user_id, NOW(), 0)
     ');
-    $stmt->bindValue(':quiz_id', $quizId, PDO::PARAM_INT);
-    $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt->execute([
+        ':quiz_id' => $quizId,
+        ':user_id' => $userId
+    ]);
 
-    return (int) $pdo->lastInsertId() ?: null;
+    return (int)$pdo->lastInsertId();
 }
+
 function quizAttemptComplete(int $attemptId, float $score): bool
 {
     $pdo = getDatabase();
