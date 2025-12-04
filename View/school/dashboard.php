@@ -42,7 +42,7 @@ require __DIR__ . '/../layout/header.php';
                         <a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode((string)$quiz['id']) ?>">
                             Résultats
                         </a>
-
+                        <a href="https://github.com/EvannCarnot/Quizzeo_projet.git" Lien de partage ></a>
 
 
 

@@ -76,7 +76,9 @@ require __DIR__ . '/../layout/header.php';
                                     <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
                                         Publier
                                     </a>
+                                
                                 <?php endif; ?>
+                                <a href="https://github.com/EvannCarnot/Quizzeo_projet.git" Lien de partage ></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
