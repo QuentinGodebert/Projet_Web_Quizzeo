@@ -31,10 +31,18 @@ if ($uri === '/') {
     adminDashboardAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardController();
-} elseif ($uri === '/company/quiz_create') {
+} elseif ($uri === '/company/survey_create' || $uri === '/company/survey_create.php') {
     companyCreateController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
+} elseif ($uri === '/school/quiz_create') {
+    schoolQuizCreateController();
+} elseif ($uri === '/school/quiz_edit') {
+    schoolQuizEditController();
+} elseif ($uri === '/school/quiz_result') {
+    schoolQuizResultController();
+} elseif ($uri === '/user' || $uri === '/user.php') {
+    userDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
 } else {

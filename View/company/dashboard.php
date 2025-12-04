@@ -22,9 +22,10 @@ require __DIR__ . '/../layout/header.php';
             et consulter les réponses de vos alternants / stagiaires.
         </p>
 
-        <a href="./survey_create" class="btn btn-primary">
+        <a href="/Projet_Web_Quizzeo/company/survey_create" class="btn btn-primary">
             Créer un nouveau quiz
         </a>
+
     </header>
 
     <?php if (!empty($flashSuccess)): ?>
