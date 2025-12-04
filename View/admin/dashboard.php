@@ -35,10 +35,13 @@ require __DIR__ . '/../layout/header.php';
                             <td><?= htmlspecialchars($user['role']) ?></td>
                             <td><?= $user['is_active'] ? '✅ Actif' : '❌ Inactif' ?></td>
                             <td>
-                                <form method="post" action="./admin">
-                                    <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                    <button type="submit">
-                                        <?= $user['is_active'] ? 'Désactiver' : 'Activer' ?>
+                             <form method="post" action="/Projet_Web_Quizzeo/admin/toggle-user">
+    <input type="hidden" name="id" value="<?= (int)$user['id'] ?>">
+    <button type="submit">
+        <?= $user['is_active'] ? 'Désactiver' : 'Activer' ?>
+    </button>
+</form>
+
                                     </button>
                                 </form>
                             </td>
