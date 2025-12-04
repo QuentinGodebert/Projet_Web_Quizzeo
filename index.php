@@ -31,7 +31,7 @@ if ($uri === '/') {
     adminDashboardAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardController();
-} elseif ($uri === '/company/survey_create') {
+} elseif ($uri === '/company/quiz_create') {
     companyCreateController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
