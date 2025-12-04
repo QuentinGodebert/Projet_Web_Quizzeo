@@ -31,9 +31,8 @@ require __DIR__ . '/../layout/header.php';
                     <td><?= htmlspecialchars($quiz['status'] ?? '')?></td>
                     <td><?= htmlspecialchars($quiz['created_at'] ?? '') ?></td>
                     <td>
-      <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode((string)$quiz['id']) ?>">
-    Modifier
-</a> |
+ <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode((string)$quiz['id']) ?>">Modifier</a>
+
 <a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode((string)$quiz['id']) ?>">
     Résultats
 </a>

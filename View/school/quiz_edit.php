@@ -1,13 +1,12 @@
 <?php
 
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../helpers/csrf.php';
 $csrfToken = csrf_generate_token();
 require __DIR__ . '/../layout/header.php';
 ?>
 
-<h1>Modifier un quiz</h1>
+<h1>Modifier le quiz</h1>
 
 <?php if (!empty($errors)): ?>
     <div class="errors">
@@ -19,25 +18,22 @@ require __DIR__ . '/../layout/header.php';
     </div>
 <?php endif; ?>
 
-<form method="POST"
-      action="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= htmlspecialchars((string)$quiz['id']) ?>">
-    ...
-</form>
-
+<!-- AUCUN action : le POST repart sur la même URL, ex: /Projet_Web_Quizzeo/school/quiz_edit?id=2 -->
+<form method="POST">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
     <div>
         <label for="title">Titre du quiz :</label>
         <input type="text" name="title" id="title"
-            value="<?= htmlspecialchars($_POST['title'] ?? $quiz['title']) ?>" required>
+               value="<?= htmlspecialchars($quiz['title'] ?? '') ?>" required>
     </div>
 
     <div>
         <label for="description">Description :</label>
-        <textarea name="description" id="description"><?= htmlspecialchars($_POST['description'] ?? $quiz['description']) ?></textarea>
+        <textarea name="description" id="description"><?= htmlspecialchars($quiz['description'] ?? '') ?></textarea>
     </div>
 
-    <button type="submit" class="btn">Enregistrer les modifications</button>
+    <button type="submit" class="btn">Enregistrer</button>
 </form>
 
-<p><a href="/school/dashboard">← Retour au tableau de bord</a></p>
+<p><a href="/Projet_Web_Quizzeo/school">← Retour au tableau de bord</a></p>
