@@ -34,6 +34,8 @@ if ($uri === '/') {
     adminDashboardAction();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
+} elseif ($uri === '/company' || $uri === '/company.php') {
+    companyDashboardController();
 } elseif ($uri === '/company/survey_create' || $uri === '/company/survey_create.php') {
     companyCreateController();
 } elseif ($uri === '/company/survey_edit') {
