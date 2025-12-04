@@ -35,7 +35,7 @@ require __DIR__ . '/../layout/header.php';
                             <td><?= htmlspecialchars($user['role']) ?></td>
                             <td><?= $user['is_active'] ? '✅ Actif' : '❌ Inactif' ?></td>
                             <td>
-                                <form method="post" action="./admin/toggle-user">
+                                <form method="post" action="./admin">
                                     <input type="hidden" name="id" value="<?= $user['id'] ?>">
                                     <button type="submit">
                                         <?= $user['is_active'] ? 'Désactiver' : 'Activer' ?>
@@ -70,7 +70,7 @@ require __DIR__ . '/../layout/header.php';
                             <td><?= $quiz['is_active'] ? '✅ Oui' : '❌ Non' ?></td>
                             <td><?= htmlspecialchars($quiz['created_at']) ?></td>
                             <td>
-                                <form method="post" action="./admin/toggle-quiz">
+                                <form method="post" action="./admin">
                                     <input type="hidden" name="id" value="<?= $quiz['id'] ?>">
                                     <button type="submit">
                                         <?= $quiz['is_active'] ? 'Désactiver' : 'Activer' ?>
