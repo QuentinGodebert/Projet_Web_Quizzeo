@@ -23,7 +23,7 @@ require __DIR__ . '/../layout/header.php';
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="/Projet_Web_Quizzeo/company/survey_create">
+    <form method="POST" action="<?= APP_BASE ?>/company/survey_create">
 
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(string: csrf_generate_token()) ?>">
 

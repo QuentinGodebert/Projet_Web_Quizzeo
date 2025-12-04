@@ -9,7 +9,6 @@ require_once __DIR__ . '/../Model/QuestionModel.php';
 require_once __DIR__ . '/../Model/AnswerModel.php';
 require_once __DIR__ . '/../Model/QuizAttemptModel.php';
 require_once __DIR__ . '/../Model/QuizAttemptAnswerModel.php';
-require_once __DIR__ . '/../config/database.php';
 
 function quizStartController(): void
 {
