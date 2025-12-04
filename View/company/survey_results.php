@@ -22,7 +22,6 @@ require __DIR__ . '/../layout/header.php';
             </p>
         <?php endif; ?>
 
-        <a href="?route=company_dashboard" class="btn btn-secondary">Retour au tableau de bord</a>
     </header>
 
     <?php if (!empty($results) && is_array($results)): ?>

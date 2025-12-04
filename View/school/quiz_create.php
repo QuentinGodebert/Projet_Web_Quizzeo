@@ -36,5 +36,4 @@ require __DIR__ . '/../layout/header.php';
     <button type="submit" class="btn">Créer le quiz</button>
 </form>
 
-<p><a href="/Projet_Web_Quizzeo/school">← Retour au tableau de bord</a></p>
 

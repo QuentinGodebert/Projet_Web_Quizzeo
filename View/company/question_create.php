@@ -11,11 +11,6 @@
 <main class="container mt-4">
     <h1>Ajouter une question</h1>
 
-    <p class="mb-3">
-        <a href="<?= APP_BASE ?>/company/questions?quiz_id=<?= (int)$quiz['id'] ?>">
-            &larr; Retour aux questions du quiz
-        </a>
-    </p>
 
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">

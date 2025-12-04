@@ -10,10 +10,6 @@
     <h1>Questions du quiz : <?= htmlspecialchars($quiz['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h1>
 
     <p class="mb-3">
-        <a href="<?= APP_BASE ?>/company">&larr; Retour au tableau de bord</a>
-    </p>
-
-    <p class="mb-3">
         <a class="btn btn-primary"
             href="<?= APP_BASE ?>/company/question_create?quiz_id=<?= (int)$quiz['id'] ?>">
             Ajouter une question

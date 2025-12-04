@@ -85,7 +85,6 @@ $attempts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     <?php endif; ?>
 
-    <p><a href="/user/dashboard">Retour au tableau de bord</a></p>
 </main>
 
 <?php require __DIR__ . '/../layout/footer.php'; ?>
