@@ -36,6 +36,12 @@ if ($uri === '/') {
     companyDashboardController();
 } elseif ($uri === '/company/survey_create' || $uri === '/company/survey_create.php') {
     companyCreateController();
+} elseif ($uri === '/company/survey_edit') {
+    companyQuizEditController();
+} elseif ($uri === '/company/quiz_results') {
+    companyQuizResultsController();
+} elseif ($uri === '/company/quiz_launch') {
+    companyQuizLaunchController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/school/quiz_create') {

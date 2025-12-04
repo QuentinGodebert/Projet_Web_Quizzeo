@@ -21,11 +21,10 @@ function requireCompanyLogin(): void
 }
 function companyDashboardController(): void
 {
-    requireCompanyLogin();
+    require_once __DIR__ . '/../Model/QuizModel.php';
+    $ownerId = (int)($_SESSION['user']['id'] ?? 0);
 
-    $pdo = getDatabase();
-    $stmt = $pdo->query('SELECT * FROM users ORDER BY created_at DESC');
-    $companies = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    $quizs = quizFindByOwner($ownerId);
 
     require __DIR__ . '/../View/company/dashboard.php';
 }
@@ -53,32 +52,39 @@ function companyProfileController(): void
         return;
     }
 }
-function companyCreateController()
-{
-    require_once __DIR__ . '/../Model/quizModel.php';
-    $pdo = getDatabase();
 
-    $error = '';
-    $owner_id = $_SESSION['user']['id'] ?? null;
+function companyCreateController(): void
+{
+    if (empty($_SESSION['user']) || $_SESSION['user']['role'] !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $errors = [];
+    $title = '';
+    $description = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
 
-        if ($owner_id && $title !== '' && $description !== '') {
-            if (createQuiz($pdo, $title, $description, $owner_id)) {
-                header('Location: ' . APP_BASE . '/company/dashboard');
+        if ($title === '') {
+            $errors[] = 'Le titre est obligatoire.';
+        }
+
+        if (!$errors) {
+            $ownerId = (int) $_SESSION['user']['id'];
+            if (quizCreate($ownerId, $title, $description)) {
+                header('Location: ' . APP_BASE . '/company');
                 exit;
-            } else {
-                $error = "Erreur lors de la création du quiz.";
             }
-        } else {
-            $error = "Veuillez remplir tous les champs.";
+            $errors[] = "Erreur lors de la création du quiz.";
         }
     }
 
     require __DIR__ . '/../View/company/survey_create.php';
 }
+
 
 
 function companyDeleteController(): void
@@ -101,3 +107,55 @@ function companyDeleteController(): void
     header('Location: /company/dashboard');
     exit;
 }
+require_once __DIR__ . '/../Model/QuizModel.php';
+
+function companyQuizEditController(): void
+{
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $ownerId = (int) $_SESSION['user']['id'];
+    $id      = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+
+    if ($id <= 0) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    $errors = [];
+    $quiz   = quizFindById($id);
+
+    if (!$quiz) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $title       = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if ($title === '') {
+            $errors[] = 'Le titre est obligatoire.';
+        }
+
+        if (!$errors) {
+            if (quizUpdate($id, $title, $description)) {
+                header('Location: ' . APP_BASE . '/company');
+                exit;
+            }
+
+            $errors[] = "Erreur lors de la mise à jour du quiz.";
+        }
+
+        $quiz['title']       = $title;
+        $quiz['description'] = $description;
+    }
+
+    require __DIR__ . '/../View/company/survey_edit.php';
+}
+
+function companyQuizResultsController(): void {}
+
+function companyQuizLaunchController(): void {}
