@@ -5,9 +5,7 @@ declare(strict_types=1);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 require_once __DIR__ . '/../Model/QuizModel.php';
-require_once __DIR__ . '/../config/database.php';
 
 function schoolEnsureLoggedIn(): void
 {
@@ -16,18 +14,15 @@ function schoolEnsureLoggedIn(): void
         exit;
     }
 }
-
 function schoolDashboardController(): void
 {
     schoolEnsureLoggedIn();
 
     $schoolId = (int) $_SESSION['user']['id'];
-
     $quizzes = quizFindByOwner($schoolId);
 
     require __DIR__ . '/../View/school/dashboard.php';
 }
-
 function schoolQuizCreateController(): void
 {
     schoolEnsureLoggedIn();
@@ -47,8 +42,11 @@ function schoolQuizCreateController(): void
 
     $quiz = null;
     $questions = [];
+    $errors = [];
+
     require __DIR__ . '/../View/school/quiz_create.php';
 }
+
 
 function schoolQuizEditController(): void
 {
@@ -62,6 +60,7 @@ function schoolQuizEditController(): void
     }
 
     $quiz = quizFindById($id);
+
     if (!$quiz || (int) $quiz['owner_id'] !== (int) $_SESSION['user']['id']) {
         http_response_code(404);
         echo 'Quiz introuvable ou non autorisé.';
@@ -79,7 +78,10 @@ function schoolQuizEditController(): void
         header('Location: /Projet_Web_Quizzeo/school');
         exit;
     }
+
     $questions = [];
+    $errors = [];
+
     require __DIR__ . '/../View/school/quiz_edit.php';
 }
 
@@ -95,13 +97,15 @@ function schoolQuizResultController(): void
     }
 
     $quiz = quizFindById($id);
+
     if (!$quiz || (int) $quiz['owner_id'] !== (int) $_SESSION['user']['id']) {
         http_response_code(404);
         echo 'Quiz introuvable ou non autorisé.';
         return;
     }
 
-    $attempts = [];
+    $attempts = []; // à remplir plus tard
+
     require __DIR__ . '/../View/school/quizz_result.php';
 }
 

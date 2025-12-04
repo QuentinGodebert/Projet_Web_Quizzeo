@@ -18,7 +18,8 @@ require __DIR__ . '/../layout/header.php';
     </div>
 <?php endif; ?>
 
-<form method="POST" action="/school/quiz_create">
+<form method="POST" action="/Projet_Web_Quizzeo/school/quiz_create">
+
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
     <div>
@@ -35,5 +36,5 @@ require __DIR__ . '/../layout/header.php';
     <button type="submit" class="btn">Créer le quiz</button>
 </form>
 
-<p><a href="/school/dashboard">← Retour au tableau de bord</a></p>
-<?php require __DIR__ . "/../layout/footer.php"; ?>
+<p><a href="/Projet_Web_Quizzeo/school">← Retour au tableau de bord</a></p>
+
