@@ -5,7 +5,8 @@ require_once __DIR__ . '/../../helpers/csrf.php';
 
 <h1>Tableau de bord de l’école</h1>
 
-<a href="/school/quiz_create" class="btn">Créer un nouveau quiz</a>
+<a href="/Projet_Web_Quizzeo/school/quiz_create" class="btn">Créer un nouveau quiz</a>
+
 
 <?php if (empty($quizzes)): ?>
     <p>Aucun quiz créé pour le moment.</p>
@@ -28,8 +29,9 @@ require_once __DIR__ . '/../../helpers/csrf.php';
                     <td><?= htmlspecialchars($quiz['status']) ?></td>
                     <td><?= htmlspecialchars($quiz['created_at'] ?? '') ?></td>
                     <td>
-                        <a href="/school/quiz_edit?id=<?= urlencode($quiz['id']) ?>">Modifier</a> |
-                        <a href="/school/quiz_result?id=<?= urlencode($quiz['id']) ?>">Résultats</a>
+                        <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode($quiz['id']) ?>">Modifier</a> |
+<a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode($quiz['id']) ?>">Résultats</a>
+
                     </td>
                 </tr>
             <?php endforeach; ?>
