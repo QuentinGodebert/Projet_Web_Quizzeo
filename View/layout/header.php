@@ -11,13 +11,13 @@ $dashboardUrl = './user';
 if ($isLoggedIn) {
     switch ($_SESSION['user']['role']) {
         case 'admin':
-            $dashboardUrl = './admin';
+            $dashboardUrl = '/admin';
             break;
         case 'school':
-            $dashboardUrl = './school';
+            $dashboardUrl = '/school';
             break;
         case 'company':
-            $dashboardUrl = './company';
+            $dashboardUrl = '/company';
             break;
     }
 }
@@ -40,10 +40,10 @@ if ($isLoggedIn) {
         <nav id="nav_bar">
             <img src="<?= APP_BASE ?>/assets/images/quizzeo_image1_logo_cutout.png" alt="Logo de l'entreprise" width="300px">
             <ul>
-                <li><a href="./">Accueil</a></li>
+                <li><a href="<?= APP_BASE ?>/">Accueil</a></li>
 
                 <?php if ($isLoggedIn): ?>
-                    <li><a href="<?= $dashboardUrl ?>">Tableau de bord</a></li>
+                    <li><a href="<?= APP_BASE ?><?= $dashboardUrl ?>">Tableau de bord</a></li>
                     <li><a href="./logout">Se déconnecter</a></li>
                 <?php else: ?>
                     <li><a href="./login">Se connecter</a></li>
