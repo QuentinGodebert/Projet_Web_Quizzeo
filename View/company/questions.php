@@ -34,12 +34,13 @@
                 <?php foreach ($questions as $q): ?>
                     <tr>
                         <td><?= (int)$q['id'] ?></td>
-                        <td><?= htmlspecialchars($q['label'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($q['intitule'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= (int)($q['points'] ?? 0) ?></td>
                         <td>
                             <a href="<?= APP_BASE ?>/company/question_edit?quiz_id=<?= (int)$quiz['id'] ?>&id=<?= (int)$q['id'] ?>">
                                 Modifier
                             </a>
+
                             |
                             <a href="<?= APP_BASE ?>/company/question_delete?quiz_id=<?= (int)$quiz['id'] ?>&id=<?= (int)$q['id'] ?>"
                                 onclick="return confirm('Supprimer cette question ?');">

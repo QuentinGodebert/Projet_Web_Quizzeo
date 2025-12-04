@@ -2,7 +2,7 @@
 
 /** @var array $quiz */
 /** @var array $errors */
-/** @var string $label */
+/** @var string $intitule */
 /** @var int $points */
 ?>
 
@@ -34,17 +34,17 @@
         <?php endif; ?>
 
         <div class="mb-3">
-            <label for="label" class="form-label">Intitulé de la question</label>
+            <intitule for="intitule" class="form-intitule">Intitulé de la question</intitule>
             <textarea
-                id="label"
-                name="label"
+                id="intitule"
+                name="intitule"
                 class="form-control"
                 rows="3"
-                required><?= htmlspecialchars($label ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                required><?= htmlspecialchars($intitule ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="points" class="form-label">Points</label>
+            <intitule for="points" class="form-intitule">Points</intitule>
             <input
                 type="number"
                 id="points"
