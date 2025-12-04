@@ -104,8 +104,7 @@ function schoolQuizResultController(): void
         return;
     }
 
-    $attempts = []; // à remplir plus tard
-
-    require __DIR__ . '/../View/school/quizz_result.php';
+    $attempts = [];
+    require __DIR__ . '/../View/school/quiz_result.php';
 }
 
