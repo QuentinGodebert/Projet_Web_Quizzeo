@@ -270,7 +270,7 @@ td.table-actions {
 .table a,
 .admin-dashboard table a,
 main.container a {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
 }
 

@@ -255,3 +255,53 @@ function findQuestionsWithChoices(PDO $pdo, int $quizId): array
 
     return $questions;
 }
+function startQuizController(): void
+{
+    if (!isset($_GET['quiz_id']) || !is_numeric($_GET['quiz_id'])) {
+        echo "Quiz invalide.";
+        return;
+    }
+
+    $quizId = (int) $_GET['quiz_id'];
+    $quiz = quizFindById($quizId);
+
+    if (!$quiz) {
+        echo "Quiz introuvable.";
+        return;
+    }
+
+    $questions = getQuestionsByQuizId($quizId);
+
+    require __DIR__ . '/../View/public/start_quiz.php';
+}
+
+function quizQuestionController(): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo "Accès interdit.";
+        return;
+    }
+
+    $quizId = (int)($_POST['quiz_id'] ?? 0);
+    $currentIndex = (int)($_POST['current'] ?? 0);
+    $answers = $_POST['answers'] ?? [];
+
+    $questions = getQuestionsByQuizId($quizId);
+    $quiz = quizFindById($quizId);
+
+    if ($currentIndex >= count($questions)) {
+        $score = 0;
+        foreach ($questions as $index => $q) {
+            $given = trim($answers[$index] ?? '');
+            // Exemple de validation simple
+            if (strtolower($given) === 'oui') {
+                $score += (int)($q['points'] ?? 1);
+            }
+        }
+        require __DIR__ . '/../View/quiz/end_quiz.php';
+        return;
+    }
+
+    $question = $questions[$currentIndex];
+    require __DIR__ . '/../View/company/questions.php';
+}
