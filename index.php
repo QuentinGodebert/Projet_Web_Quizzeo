@@ -28,15 +28,15 @@ if ($uri === '/') {
     loginAction();
 } elseif ($uri === '/register' || $uri === '/register.php') {
     registerAction();
-} elseif ($uri === '/logout' || $uri === '/logout.php') {
+} elseif ($uri === '/logout' || $uri === '/logout.php' || $uri === '/school/logout') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
-} elseif ($uri === '/company' || $uri === '/company.php') {
-    companyDashboardController();
+} elseif ($uri === '/admin' || $uri === '/admin.php') {
+    adminDashboardAction();
 } elseif ($uri === '/company/survey_create' || $uri === '/company/survey_create.php') {
     companyCreateController();
-} elseif ($uri === '/school' || $uri === '/school.php') {
+} elseif ($uri === '/school' || $uri === '/school/' || $uri === '/school.php' || $uri === '/school/school') {
     schoolDashboardController();
 } elseif ($uri === '/school/quiz_create') {
     schoolQuizCreateController();

@@ -29,6 +29,4 @@ require __DIR__ . "/../layout/header.php";
     </table>
 <?php endif; ?>
 
-<p><a href="/school/dashboard">← Retour au tableau de bord</a></p>
-
 <?php require __DIR__ . "/../layout/footer.php"; ?>
