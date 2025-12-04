@@ -30,14 +30,20 @@ if ($uri === '/') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
-} elseif ($uri === '/admin/toggle-user') {
-    toggleUserStatusAction();
-} elseif ($uri === '/admin/toggle-quiz') {
-    toggleQuizStatusAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardController();
+} elseif ($uri === '/company/survey_create' || $uri === '/company/survey_create.php') {
+    companyCreateController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
+} elseif ($uri === '/school/quiz_create') {
+    schoolQuizCreateController();
+} elseif ($uri === '/school/quiz_edit') {
+    schoolQuizEditController();
+} elseif ($uri === '/school/quiz_result') {
+    schoolQuizResultController();
+} elseif ($uri === '/user' || $uri === '/user.php') {
+    userDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
 } else {

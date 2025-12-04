@@ -53,26 +53,19 @@ function quizAll(): array
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
-function quizCreate(int $ownerId, string $title, ?string $description): ?int
+function createQuiz(PDO $pdo, string $title, string $description, int $owner_id): bool
 {
-    $pdo = getDatabase();
-
-    $accessToken = bin2hex(random_bytes(32));
-
-    $stmt = $pdo->prepare('
-        INSERT INTO quizzes (owner_id, title, description, status, is_active, access_token, created_at, updated_at)
-        VALUES (:owner_id, :title, :description, :status, 1, :access_token, NOW(), NOW())
-    ');
-
-    $stmt->bindValue(':owner_id', $ownerId, PDO::PARAM_INT);
-    $stmt->bindValue(':title', $title, PDO::PARAM_STR);
-    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
-    $stmt->bindValue(':status', 'draft', PDO::PARAM_STR);
-    $stmt->bindValue(':access_token', $accessToken, PDO::PARAM_STR);
-    $stmt->execute();
-
-    return (int) $pdo->lastInsertId() ?: null;
+    $stmt = $pdo->prepare("
+        INSERT INTO quizzes (title, description, owner_id, is_active, created_at, updated_at)
+        VALUES (:title, :description, :owner_id, 1, NOW(), NOW())
+    ");
+    return $stmt->execute([
+        'title'       => $title,
+        'description' => $description,
+        'owner_id'    => $owner_id,
+    ]);
 }
+
 function quizUpdate(int $id, string $title, ?string $description): bool
 {
     $pdo = getDatabase();
