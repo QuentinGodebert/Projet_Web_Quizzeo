@@ -22,7 +22,7 @@ require __DIR__ . '/../layout/header.php';
             et consulter les réponses de vos alternants / stagiaires.
         </p>
 
-        <a href="?route=company_quiz_create" class="btn btn-primary">
+        <a href="./survey_create" class="btn btn-primary">
             Créer un nouveau quiz
         </a>
     </header>
@@ -45,40 +45,40 @@ require __DIR__ . '/../layout/header.php';
         <?php if (!empty($quizs) && is_array($quizs)): ?>
             <table class="table">
                 <thead>
-                <tr>
-                    <th>Titre</th>
-                    <th>Statut</th>
-                    <th>Participants</th>
-                    <th>Créé le</th>
-                    <th>Dernière mise à jour</th>
-                    <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Statut</th>
+                        <th>Participants</th>
+                        <th>Créé le</th>
+                        <th>Dernière mise à jour</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($quizs as $quiz): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($quiz['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($quiz['status'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= (int)($quiz['participants_count'] ?? 0) ?></td>
-                        <td><?= htmlspecialchars($quiz['created_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($quiz['updated_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                        <td>
-                            <a href="?route=company_quiz_results&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                Résultats
-                            </a>
-                            |
-                            <a href="?route=company_quiz_show_link&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                Lien à envoyer
-                            </a>
-                            <?php if (($quiz['status'] ?? '') === 'draft'): ?>
-                                |
-                                <a href="?route=company_quiz_launch&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                    Lancer
+                    <?php foreach ($quizs as $quiz): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($quiz['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($quiz['status'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= (int)($quiz['participants_count'] ?? 0) ?></td>
+                            <td><?= htmlspecialchars($quiz['created_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($quiz['updated_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                                <a href="?route=company_quiz_results&id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                    Résultats
                                 </a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                                |
+                                <a href="?route=company_quiz_show_link&id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                    Lien à envoyer
+                                </a>
+                                <?php if (($quiz['status'] ?? '') === 'draft'): ?>
+                                    |
+                                    <a href="?route=company_quiz_launch&id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                        Lancer
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         <?php else: ?>

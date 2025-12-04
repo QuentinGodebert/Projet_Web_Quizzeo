@@ -29,12 +29,10 @@ if ($uri === '/') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
-} elseif ($uri === '/admin/toggle-user') {
-    toggleUserStatusAction();
-} elseif ($uri === '/admin/toggle-quiz') {
-    toggleQuizStatusAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardController();
+} elseif ($uri === '/company/survey_create') {
+    companyCreateController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {

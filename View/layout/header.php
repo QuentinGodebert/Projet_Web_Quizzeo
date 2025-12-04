@@ -38,6 +38,7 @@ if ($isLoggedIn) {
 <body>
     <header>
         <nav id="nav_bar">
+            <img src="<?= APP_BASE ?>/assets/images/quizzeo_image1_logo_cutout.png" alt="Logo de l'entreprise" width="300px">
             <ul>
                 <li><a href="./">Accueil</a></li>
 
