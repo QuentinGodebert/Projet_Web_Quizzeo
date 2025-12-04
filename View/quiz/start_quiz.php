@@ -16,7 +16,7 @@ $quizDescription = $quiz['description'] ?? '';
         <h1><?= htmlspecialchars($quiz['title']) ?></h1>
         <p><?= htmlspecialchars($quiz['description']) ?></p>
 
-        <form action="<?= APP_BASE ?>/company/question_answer.php" method="POST">
+        <form action="<?= APP_BASE ?>View/company/question_answer.php" method="POST">
             <input type="hidden" name="quiz_id" value="<?= (int)$quiz['id'] ?>">
             <input type="hidden" name="current" value="0">
             <button type="submit">Commencer le quiz</button>
