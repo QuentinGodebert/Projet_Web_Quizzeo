@@ -19,13 +19,27 @@ function adminDashboardAction(): void
 
 function toggleUserStatusAction(): void
 {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+
+    if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] ?? null) !== 'admin') {
+        header('Location: /Projet_Web_Quizzeo/login');
+        exit;
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         $userId = (int) $_POST['id'];
+
+    
         toggleUserStatus($userId);
     }
+
     header('Location: /Projet_Web_Quizzeo/admin');
     exit;
 }
+
 
 function toggleQuizStatusAction(): void
 {

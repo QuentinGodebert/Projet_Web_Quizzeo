@@ -64,14 +64,17 @@ require __DIR__ . '/../layout/header.php';
                             <td><?= htmlspecialchars($quiz['created_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($quiz['updated_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                             <td>
-                                <a href="?route=company_quiz_results&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                    Résultats
+                                <a href="<?= APP_BASE ?>/company/survey_edit?id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                    Modifier
                                 </a>
                                 <?php if (($quiz['status'] ?? '') === 'draft'): ?>
-                                    |
-                                    <a href="?route=company_quiz_launch&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                        Lancer
-                                    </a>
+                                    <?php if (($quiz['status'] ?? '') === 'draft'): ?>
+                                        |
+                                        <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                            Publier
+                                        </a>
+                                    <?php endif; ?>
+
                                 <?php endif; ?>
                             </td>
                         </tr>

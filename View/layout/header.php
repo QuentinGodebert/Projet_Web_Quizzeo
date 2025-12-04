@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $isLoggedIn   = isset($_SESSION['user']);
-$dashboardUrl = './user';
+$dashboardUrl = '/user';
 
 if ($isLoggedIn) {
     switch ($_SESSION['user']['role']) {

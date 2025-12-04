@@ -107,3 +107,76 @@ function companyDeleteController(): void
     header('Location: /company/dashboard');
     exit;
 }
+require_once __DIR__ . '/../Model/QuizModel.php';
+
+function companyQuizEditController(): void
+{
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $ownerId = (int) $_SESSION['user']['id'];
+    $id      = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+
+    if ($id <= 0) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    $errors = [];
+    $quiz   = quizFindById($id);
+
+    if (!$quiz) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $title       = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if ($title === '') {
+            $errors[] = 'Le titre est obligatoire.';
+        }
+
+        if (!$errors) {
+            if (quizUpdate($id, $title, $description)) {
+                header('Location: ' . APP_BASE . '/company');
+                exit;
+            }
+
+            $errors[] = "Erreur lors de la mise à jour du quiz.";
+        }
+
+        $quiz['title']       = $title;
+        $quiz['description'] = $description;
+    }
+
+    require __DIR__ . '/../View/company/survey_edit.php';
+}
+
+function companyQuizResultsController(): void {}
+
+require_once __DIR__ . '/../Model/QuizModel.php';
+
+function companyQuizLaunchController(): void
+{
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
+
+    $ownerId = (int)$_SESSION['user']['id'];
+    $id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+    if ($id <= 0) {
+        header('Location: ' . APP_BASE . '/company');
+        exit;
+    }
+
+    publishQuiz($id, $ownerId);
+
+    header('Location: ' . APP_BASE . '/company');
+    exit;
+}
