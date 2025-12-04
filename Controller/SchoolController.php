@@ -72,7 +72,7 @@ function schoolQuizEditController(): void
         $description = $_POST['description'] ?? null;
 
         if ($title !== '') {
-            quizUpdate($id, $title, $description);
+            quizUpdate($id, $title, $description ?? '');
         }
 
         header('Location: /Projet_Web_Quizzeo/school');
@@ -84,6 +84,7 @@ function schoolQuizEditController(): void
 
     require __DIR__ . '/../View/school/quiz_edit.php';
 }
+
 
 function schoolQuizResultController(): void
 {
@@ -104,8 +105,8 @@ function schoolQuizResultController(): void
         return;
     }
 
-    $attempts = []; // à remplir plus tard
+    $attempts = [];
 
-    require __DIR__ . '/../View/school/quizz_result.php';
+    require __DIR__ . '/../View/school/quiz_result.php';
 }
 
