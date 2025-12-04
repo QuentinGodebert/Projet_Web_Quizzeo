@@ -68,17 +68,19 @@ require __DIR__ . '/../layout/header.php';
                     <?php foreach ($quizzes as $quiz): ?>
                         <tr>
                             <td><?= $quiz['id'] ?></td>
-                            <td><?= htmlspecialchars($quiz['title']) ?></td>
-                            <td><?= htmlspecialchars($quiz['status']) ?></td>
-                            <td><?= $quiz['is_active'] ? '✅ Oui' : '❌ Non' ?></td>
-                            <td><?= htmlspecialchars($quiz['created_at']) ?></td>
+                          <td><?= htmlspecialchars($quiz['title'] ?? '') ?></td>
+<td><?= htmlspecialchars($quiz['status'] ?? '') ?></td>
+<td><?= $quiz['is_active'] ? '✅ Oui' : '❌ Non' ?></td>
+<td><?= htmlspecialchars($quiz['created_at'] ?? '') ?></td>
+
                             <td>
-                                <form method="post" action="./admin">
-                                    <input type="hidden" name="id" value="<?= $quiz['id'] ?>">
-                                    <button type="submit">
-                                        <?= $quiz['is_active'] ? 'Désactiver' : 'Activer' ?>
-                                    </button>
-                                </form>
+         <form method="post" action="/Projet_Web_Quizzeo/admin/toggle-quiz">
+    <input type="hidden" name="id" value="<?= (int)$quiz['id'] ?>">
+    <button type="submit">
+        <?= $quiz['is_active'] ? 'Désactiver' : 'Activer' ?>
+    </button>
+</form>
+
                             </td>
                         </tr>
                     <?php endforeach; ?>

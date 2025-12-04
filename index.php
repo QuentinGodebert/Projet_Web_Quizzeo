@@ -32,6 +32,17 @@ if ($uri === '/') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
+    } elseif ($uri === '/admin/toggle-user') {
+    toggleUserStatusAction();
+    } elseif ($uri === '/admin' || $uri === '/admin.php') {
+    adminDashboardAction();
+
+} elseif ($uri === '/admin/toggle-user') {
+    toggleUserStatusAction();
+
+} elseif ($uri === '/admin/toggle-quiz') {
+    toggleQuizStatusAction();
+
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
@@ -44,9 +55,11 @@ if ($uri === '/') {
     companyQuizResultsController();
 } elseif ($uri === '/company/quiz_launch') {
     companyQuizLaunchController();
-} elseif ($uri === '/company/quiz_launch') {
-    companyQuizLaunchController();
-} elseif ($uri === '/school' || $uri === '/school.php') {
+} elseif ($uri === '/school/quiz_launch') {
+    schoolQuizLaunchController();
+}
+
+ elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/school/quiz_create') {
     schoolQuizCreateController();
