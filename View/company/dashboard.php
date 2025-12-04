@@ -67,10 +67,6 @@ require __DIR__ . '/../layout/header.php';
                                 <a href="?route=company_quiz_results&id=<?= (int)($quiz['id'] ?? 0) ?>">
                                     Résultats
                                 </a>
-                                |
-                                <a href="?route=company_quiz_show_link&id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                    Lien à envoyer
-                                </a>
                                 <?php if (($quiz['status'] ?? '') === 'draft'): ?>
                                     |
                                     <a href="?route=company_quiz_launch&id=<?= (int)($quiz['id'] ?? 0) ?>">

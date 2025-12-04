@@ -145,8 +145,5 @@ function toggleQuizStatus(int $id): void
 }
 function quizCreate(int $ownerId, string $title, ?string $description): bool
 {
-    $pdo = getDatabase();
-
-
-    return createQuiz($ownerId, $title, $description ?? '') !== null;
+    return createQuiz($ownerId, $title, $description) !== null;
 }

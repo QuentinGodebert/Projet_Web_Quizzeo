@@ -21,11 +21,10 @@ function requireCompanyLogin(): void
 }
 function companyDashboardController(): void
 {
-    requireCompanyLogin();
+    require_once __DIR__ . '/../Model/QuizModel.php';
+    $ownerId = (int)($_SESSION['user']['id'] ?? 0);
 
-    $pdo = getDatabase();
-    $stmt = $pdo->query('SELECT * FROM users ORDER BY created_at DESC');
-    $companies = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    $quizs = quizFindByOwner($ownerId);
 
     require __DIR__ . '/../View/company/dashboard.php';
 }
@@ -53,9 +52,10 @@ function companyProfileController(): void
         return;
     }
 }
+
 function companyCreateController(): void
 {
-    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+    if (empty($_SESSION['user']) || $_SESSION['user']['role'] !== 'company') {
         header('Location: ' . APP_BASE . '/login');
         exit;
     }
@@ -67,27 +67,24 @@ function companyCreateController(): void
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $owner_id = (int)($_SESSION['user']['id'] ?? 0);
 
         if ($title === '') {
             $errors[] = 'Le titre est obligatoire.';
         }
-        if ($description === '') {
-            $errors[] = 'La description est obligatoire.';
-        }
 
-        if (!$errors && $owner_id > 0) {
-            if (quizCreate($owner_id, $title, $description)) {
+        if (!$errors) {
+            $ownerId = (int) $_SESSION['user']['id'];
+            if (quizCreate($ownerId, $title, $description)) {
                 header('Location: ' . APP_BASE . '/company');
                 exit;
-            } else {
-                $errors[] = 'Erreur lors de la création du quiz.';
             }
+            $errors[] = "Erreur lors de la création du quiz.";
         }
     }
 
     require __DIR__ . '/../View/company/survey_create.php';
 }
+
 
 
 function companyDeleteController(): void
