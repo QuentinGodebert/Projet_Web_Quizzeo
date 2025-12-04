@@ -34,7 +34,7 @@ if ($uri === '/') {
 } elseif ($uri === '/admin/toggle-quiz') {
     toggleQuizStatusAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
-    companyDashboardAction();
+    companyDashboardController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
