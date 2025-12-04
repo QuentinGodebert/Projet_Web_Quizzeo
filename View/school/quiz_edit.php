@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../helpers/csrf.php';
 $csrfToken = csrf_generate_token();
+require __DIR__ . '/../layout/header.php';
 ?>
 
 <h1>Modifier un quiz</h1>
@@ -23,7 +25,7 @@ $csrfToken = csrf_generate_token();
     <div>
         <label for="title">Titre du quiz :</label>
         <input type="text" name="title" id="title"
-               value="<?= htmlspecialchars($_POST['title'] ?? $quiz['title']) ?>" required>
+            value="<?= htmlspecialchars($_POST['title'] ?? $quiz['title']) ?>" required>
     </div>
 
     <div>

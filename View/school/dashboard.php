@@ -1,6 +1,8 @@
 <?php
+
 declare(strict_types=1);
 require_once __DIR__ . '/../../helpers/csrf.php';
+require __DIR__ . '/../layout/header.php';
 ?>
 
 <h1>Tableau de bord de l’école</h1>
@@ -30,7 +32,7 @@ require_once __DIR__ . '/../../helpers/csrf.php';
                     <td><?= htmlspecialchars($quiz['created_at'] ?? '') ?></td>
                     <td>
                         <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode($quiz['id']) ?>">Modifier</a> |
-<a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode($quiz['id']) ?>">Résultats</a>
+                        <a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode($quiz['id']) ?>">Résultats</a>
 
                     </td>
                 </tr>

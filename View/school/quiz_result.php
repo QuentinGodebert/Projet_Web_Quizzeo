@@ -1,7 +1,7 @@
 <?php
+
 declare(strict_types=1);
-require __DIR__ ."/../layout/header.php";
-require __DIR__ ."/../layout/footer.php";
+require __DIR__ . "/../layout/header.php";
 ?>
 
 <h1>Résultats du quiz</h1>
@@ -30,3 +30,5 @@ require __DIR__ ."/../layout/footer.php";
 <?php endif; ?>
 
 <p><a href="/school/dashboard">← Retour au tableau de bord</a></p>
+
+<?php require __DIR__ . "/../layout/footer.php"; ?>
