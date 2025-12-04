@@ -301,3 +301,4 @@ function companyQuestionDeleteController(): void
     header('Location: ' . APP_BASE . '/company/questions?quiz_id=' . $quizId);
     exit;
 }
+ 

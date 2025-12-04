@@ -112,20 +112,19 @@ function registerAction(): void
                 $errors['email'] = 'Cet email est déjà utilisé.';
             }
         }
-        if (empty($errors)) {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+       if (empty($errors)) {
 
-            userCreate(
-                $role,
-                $email,
-                $hashedPassword,
-                $first_name,
-                $last_name
-            );
+    userCreate(
+        $role,
+        $email,
+        $password,
+        $first_name,
+        $last_name
+    );
 
-            header('Location: ./login');
-            exit;
-        }
+    header('Location: ' . APP_BASE . '/login');
+    exit;
+}
     }
 
     $pageTitle = 'Création de compte';
