@@ -46,6 +46,8 @@ if ($uri === '/') {
     userDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
+} elseif ($uri === '/quiz/start') {
+    publicStartQuizController();
 } else {
     http_response_code(404);
     echo 'Page non trouvée : ' . htmlspecialchars($uri);
