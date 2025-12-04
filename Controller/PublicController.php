@@ -16,6 +16,8 @@ function requireQuizUserLogin(): void
 }
 function publicHomeController(): void
 {
+    $quizzes = getPublishedQuizzes();
+
     require __DIR__ . '/../View/public/home.php';
 }
 function publicStartQuizController(): void
@@ -105,7 +107,7 @@ function publicStartQuizController(): void
     $pdo->beginTransaction();
 
     try {
-  
+
         $stmtAttempt = $pdo->prepare('
             INSERT INTO quiz_attempts (quiz_id, user_id, started_at, finished_at, score, is_completed)
             VALUES (:quiz_id, :user_id, :started_at, :finished_at, :score, :is_completed)
@@ -160,7 +162,7 @@ function publicStartQuizController(): void
                     ]);
                 }
             } else {
-             
+
                 $answerText = is_string($userValue) ? trim($userValue) : '';
 
                 $stmtAnswer->execute([

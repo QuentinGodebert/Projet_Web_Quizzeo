@@ -42,6 +42,8 @@ if ($uri === '/') {
     companyQuizResultsController();
 } elseif ($uri === '/company/quiz_launch') {
     companyQuizLaunchController();
+} elseif ($uri === APP_BASE . '/company/quiz_launch') {
+    companyQuizLaunchController();
 } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/school/quiz_create') {
@@ -50,8 +52,8 @@ if ($uri === '/') {
     schoolQuizEditController();
 } elseif ($uri === '/school/quiz_result') {
     schoolQuizResultController();
-} elseif ($uri === '/user' || $uri === '/user.php') {
-    userDashboardController();
+} elseif ($uri === APP_BASE . '/school/quiz_launch') {
+    schoolQuizLaunchController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
 } elseif ($uri === '/quiz/start') {

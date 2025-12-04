@@ -68,10 +68,13 @@ require __DIR__ . '/../layout/header.php';
                                     Modifier
                                 </a>
                                 <?php if (($quiz['status'] ?? '') === 'draft'): ?>
-                                    |
-                                    <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                        Publier
-                                    </a>
+                                    <?php if (($quiz['status'] ?? '') === 'draft'): ?>
+                                        |
+                                        <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                            Publier
+                                        </a>
+                                    <?php endif; ?>
+
                                 <?php endif; ?>
                             </td>
                         </tr>
