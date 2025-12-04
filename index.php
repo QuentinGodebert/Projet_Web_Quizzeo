@@ -7,6 +7,8 @@ require_once __DIR__ . '/Controller/PublicController.php';
 require_once __DIR__ . '/Controller/SchoolController.php';
 require_once __DIR__ . '/Controller/QuizController.php';
 require_once __DIR__ . '/Controller/UserController.php';
+require_once __DIR__ . '/Model/QuizModel.php';
+
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/Projet_Web_Quizzeo';

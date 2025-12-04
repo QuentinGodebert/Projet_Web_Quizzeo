@@ -16,7 +16,8 @@ $csrfToken = csrf_generate_token();
     </div>
 <?php endif; ?>
 
-<form method="POST" action="/school/quiz_create">
+<form method="POST" action="/Projet_Web_Quizzeo/school/quiz_create">
+
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
     <div>
@@ -33,4 +34,5 @@ $csrfToken = csrf_generate_token();
     <button type="submit" class="btn">Créer le quiz</button>
 </form>
 
-<p><a href="/school/dashboard">← Retour au tableau de bord</a></p>
+<p><a href="/Projet_Web_Quizzeo/school">← Retour au tableau de bord</a></p>
+

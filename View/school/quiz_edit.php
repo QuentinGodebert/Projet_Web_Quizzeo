@@ -17,7 +17,11 @@ $csrfToken = csrf_generate_token();
     </div>
 <?php endif; ?>
 
-<form method="POST" action="/school/quiz_edit?id=<?= urlencode($quiz['id']) ?>">
+<form method="POST"
+      action="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= htmlspecialchars((string)$quiz['id']) ?>">
+    ...
+</form>
+
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
     <div>

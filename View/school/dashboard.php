@@ -26,11 +26,18 @@ require_once __DIR__ . '/../../helpers/csrf.php';
                 <tr>
                     <td><?= htmlspecialchars($quiz['title']) ?></td>
                     <td><?= htmlspecialchars($quiz['description'] ?? '') ?></td>
-                    <td><?= htmlspecialchars($quiz['status']) ?></td>
+                    <td><?= htmlspecialchars($quiz['status'] ?? '')?></td>
                     <td><?= htmlspecialchars($quiz['created_at'] ?? '') ?></td>
                     <td>
-                        <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode($quiz['id']) ?>">Modifier</a> |
-<a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode($quiz['id']) ?>">Résultats</a>
+      <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode((string)$quiz['id']) ?>">
+    Modifier
+</a> |
+<a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode((string)$quiz['id']) ?>">
+    Résultats
+</a>
+
+
+
 
                     </td>
                 </tr>
