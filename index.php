@@ -60,6 +60,14 @@ if ($uri === '/') {
     userDashboardController();
 } elseif ($uri === '/quiz/start') {
     publicStartQuizController();
+} elseif ($uri === APP_BASE . '/company/questions') {
+    companyQuestionsController();
+} elseif ($uri === APP_BASE . '/company/question_create') {
+    companyQuestionCreateController();
+} elseif ($uri === APP_BASE . '/company/question_edit') {
+    companyQuestionEditController();
+} elseif ($uri === APP_BASE . '/company/question_delete') {
+    companyQuestionDeleteController();
 } else {
     http_response_code(404);
     echo 'Page non trouvée : ' . htmlspecialchars($uri);

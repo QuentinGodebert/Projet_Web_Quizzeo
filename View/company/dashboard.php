@@ -67,14 +67,15 @@ require __DIR__ . '/../layout/header.php';
                                 <a href="<?= APP_BASE ?>/company/survey_edit?id=<?= (int)($quiz['id'] ?? 0) ?>">
                                     Modifier
                                 </a>
+                                |
+                                <a href="<?= APP_BASE ?>/company/questions?quiz_id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                    Questions
+                                </a>
                                 <?php if (($quiz['status'] ?? '') === 'draft'): ?>
-                                    <?php if (($quiz['status'] ?? '') === 'draft'): ?>
-                                        |
-                                        <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                            Publier
-                                        </a>
-                                    <?php endif; ?>
-
+                                    |
+                                    <a href="<?= APP_BASE ?>/company/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                        Publier
+                                    </a>
                                 <?php endif; ?>
                             </td>
                         </tr>

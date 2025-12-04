@@ -71,7 +71,7 @@ function quizSubmitController(): void
 
     $userId = (int) $_SESSION['user']['id'];
     $quizId = (int) $quiz['id'];
-    $questions = questionFindByQuiz($quizId);
+    $questions = getQuestionsByQuizId($quizId);
 
     if (empty($questions)) {
         http_response_code(400);
