@@ -14,12 +14,29 @@ function requireQuizUserLogin(): void
         exit;
     }
 }
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../config/database.php';
+
 function publicHomeController(): void
 {
-    $quizzes = getPublishedQuizzes();
+    $pdo = getDatabase();
+
+    $stmt = $pdo->prepare("
+        SELECT *
+        FROM quizzes
+        WHERE status = 'launched'
+          AND is_active = 1
+        ORDER BY created_at DESC
+    ");
+    $stmt->execute();
+
+    $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
     require __DIR__ . '/../View/public/home.php';
 }
+
 function publicStartQuizController(): void
 {
     requireQuizUserLogin();

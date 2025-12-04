@@ -7,6 +7,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/../Model/QuizModel.php';
 
+function requireSchoolLogin(): void
+{
+    if (!isset($_SESSION['user'])) {
+        header('Location: /');
+        exit;
+    }
+
+    if ($_SESSION['user']['role'] !== 'school') {
+        http_response_code(403);
+        echo 'Accès interdit : rôle école requis.';
+        exit;
+    }
+}
+
+
 function schoolEnsureLoggedIn(): void
 {
     if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] ?? null) !== 'school') {
@@ -113,21 +128,27 @@ require_once __DIR__ . '/../Model/QuizModel.php';
 
 function schoolQuizLaunchController(): void
 {
-    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'school') {
-        header('Location: ' . APP_BASE . '/login');
-        exit;
+    requireSchoolLogin();
+
+    $pdo = getDatabase();
+    $quizId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+    if ($quizId <= 0) {
+        http_response_code(400);
+        echo 'Identifiant de quiz invalide.';
+        return;
     }
 
-    $ownerId = (int)$_SESSION['user']['id'];
-    $id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $stmt = $pdo->prepare('
+        UPDATE quizzes
+        SET status = "launched", is_active = 1, updated_at = NOW()
+        WHERE id = :id
+    ');
+    $stmt->execute([':id' => $quizId]);
 
-    if ($id <= 0) {
-        header('Location: ' . APP_BASE . '/school');
-        exit;
-    }
-
-    publishQuiz($id, $ownerId);
-
-    header('Location: ' . APP_BASE . '/school');
+    header('Location: /school/dashboard');
     exit;
 }
+
+
+

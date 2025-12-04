@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
+
+
 function quizFindById(int $id, ?int $ownerId = null): ?array
 {
     $pdo = getDatabase();
@@ -25,6 +27,7 @@ function quizFindById(int $id, ?int $ownerId = null): ?array
     return $quiz ?: null;
 }
 
+
 function quizFindByAccessToken(string $token): ?array
 {
     $pdo = getDatabase();
@@ -36,6 +39,7 @@ function quizFindByAccessToken(string $token): ?array
     $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
     return $quiz ?: null;
 }
+
 function quizFindByOwner(int $ownerId): array
 {
     $pdo = getDatabase();
@@ -51,6 +55,7 @@ function quizFindByOwner(int $ownerId): array
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
+
 function quizAll(): array
 {
     $pdo = getDatabase();
@@ -72,18 +77,18 @@ function createQuiz(int $ownerId, string $title, ?string $description): ?int
 
     $stmt = $pdo->prepare('
         INSERT INTO quizzes (owner_id, title, description, status, is_active, access_token, created_at, updated_at)
-        VALUES (:owner_id, :title, :description, :status, 1, :access_token, NOW(), NOW())
+        VALUES (:owner_id, :title, :description, "draft", 1, :access_token, NOW(), NOW())
     ');
 
     $stmt->bindValue(':owner_id', $ownerId, PDO::PARAM_INT);
     $stmt->bindValue(':title', $title, PDO::PARAM_STR);
     $stmt->bindValue(':description', $description, PDO::PARAM_STR);
-    $stmt->bindValue(':status', 'draft', PDO::PARAM_STR);
     $stmt->bindValue(':access_token', $accessToken, PDO::PARAM_STR);
     $stmt->execute();
 
     return (int) $pdo->lastInsertId() ?: null;
 }
+
 function quizUpdate(int $id, string $title, ?string $description): bool
 {
     $pdo = getDatabase();
@@ -103,6 +108,7 @@ function quizUpdate(int $id, string $title, ?string $description): bool
 
     return $stmt->rowCount() > 0;
 }
+
 function quizSetStatus(int $id, string $status): bool
 {
     $allowed = ['draft', 'launched', 'finished'];
@@ -125,6 +131,7 @@ function quizSetStatus(int $id, string $status): bool
 
     return $stmt->rowCount() > 0;
 }
+
 function quizSetActive(int $id, bool $isActive): bool
 {
     $pdo = getDatabase();
@@ -142,22 +149,6 @@ function quizSetActive(int $id, bool $isActive): bool
 
     return $stmt->rowCount() > 0;
 }
-function getAllQuizzes(): array
-{
-    $pdo = getDatabase();
-    $stmt = $pdo->query("SELECT id, title, status, is_active, created_at FROM quizzes ORDER BY id DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function toggleQuizStatus(int $id): void
-{
-    $pdo = getDatabase();
-    $pdo->prepare("UPDATE quizzes SET is_active = NOT is_active WHERE id = ?")->execute([$id]);
-}
-function quizCreate(int $ownerId, string $title, ?string $description): bool
-{
-    return createQuiz($ownerId, $title, $description) !== null;
-}
 function getPublishedQuizzes(): array
 {
     $pdo = getDatabase();
@@ -171,24 +162,22 @@ function getPublishedQuizzes(): array
                created_at,
                updated_at
         FROM quizzes
-        WHERE status = :status
+        WHERE status = "launched"
           AND is_active = 1
         ORDER BY created_at DESC
     ');
 
-    $stmt->execute([
-        ':status' => 'published',
-    ]);
-
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
+
 function publishQuiz(int $id, int $ownerId): bool
 {
     $pdo = getDatabase();
 
     $stmt = $pdo->prepare('
         UPDATE quizzes
-        SET status = :status,
+        SET status = "launched",
             updated_at = NOW()
         WHERE id = :id
           AND owner_id = :owner_id
@@ -196,8 +185,24 @@ function publishQuiz(int $id, int $ownerId): bool
     ');
 
     return $stmt->execute([
-        ':status'   => 'published',
         ':id'       => $id,
         ':owner_id' => $ownerId,
     ]);
+}
+function getAllQuizzes(): array
+{
+    $pdo = getDatabase();
+    $stmt = $pdo->query("SELECT id, title, status, is_active, created_at FROM quizzes ORDER BY id DESC");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function toggleQuizStatus(int $id): void
+{
+    $pdo = getDatabase();
+    $pdo->prepare("UPDATE quizzes SET is_active = NOT is_active WHERE id = ?")->execute([$id]);
+}
+
+function quizCreate(int $ownerId, string $title, ?string $description): bool
+{
+    return createQuiz($ownerId, $title, $description) !== null;
 }
