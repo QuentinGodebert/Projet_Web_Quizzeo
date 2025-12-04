@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../helpers/csrf.php';
 require __DIR__ . '/../layout/header.php';
 ?>
-
+<main class="container">
 <h1>Tableau de bord de l’école</h1>
 
 <a href="/Projet_Web_Quizzeo/school/quiz_create" class="btn">Créer un nouveau quiz</a>
@@ -34,8 +34,9 @@ require __DIR__ . '/../layout/header.php';
                         <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode((string)$quiz['id']) ?>">Modifier</a>
                         <?php if (($quiz['status'] ?? '') === 'draft'): ?>
                             |
-                         <a href="<?= APP_BASE ?>/school/quiz_launch?id=<?= urlencode((string)$quiz['id']) ?>">
-    Publier
+                            <a href="<?= APP_BASE ?>/school/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
+                                Publier
+                            </a>
                         <?php endif; ?>
 
                         <a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode((string)$quiz['id']) ?>">
@@ -50,4 +51,5 @@ require __DIR__ . '/../layout/header.php';
             <?php endforeach; ?>
         </tbody>
     </table>
+    </main>
 <?php endif; ?>
