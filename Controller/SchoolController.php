@@ -102,6 +102,6 @@ function schoolQuizResultController(): void
     }
 
     $attempts = [];
-    require __DIR__ . '/../View/school/quizz_result.php';
+    require __DIR__ . '/../View/school/quiz_result.php';
 }
 
