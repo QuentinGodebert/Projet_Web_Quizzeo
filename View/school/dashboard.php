@@ -34,9 +34,8 @@ require __DIR__ . '/../layout/header.php';
                         <a href="/Projet_Web_Quizzeo/school/quiz_edit?id=<?= urlencode((string)$quiz['id']) ?>">Modifier</a>
                         <?php if (($quiz['status'] ?? '') === 'draft'): ?>
                             |
-                            <a href="<?= APP_BASE ?>/school/quiz_launch?id=<?= (int)($quiz['id'] ?? 0) ?>">
-                                Publier
-                            </a>
+                         <a href="<?= APP_BASE ?>/school/quiz_launch?id=<?= urlencode((string)$quiz['id']) ?>">
+    Publier
                         <?php endif; ?>
 
                         <a href="/Projet_Web_Quizzeo/school/quiz_result?id=<?= urlencode((string)$quiz['id']) ?>">
