@@ -32,6 +32,17 @@ if ($uri === '/') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
+    } elseif ($uri === '/admin/toggle-user') {
+    toggleUserStatusAction();
+    } elseif ($uri === '/admin' || $uri === '/admin.php') {
+    adminDashboardAction();
+
+} elseif ($uri === '/admin/toggle-user') {
+    toggleUserStatusAction();
+
+} elseif ($uri === '/admin/toggle-quiz') {
+    toggleQuizStatusAction();
+
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
