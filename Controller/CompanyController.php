@@ -33,26 +33,33 @@ function companyCreateController(): void
 {
     requireCompanyLogin();
 
-    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-        http_response_code(400);
-        echo 'Identifiant d’entreprise invalide.';
-        return;
+    $errors      = [];
+    $title       = '';
+    $description = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $title       = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if ($title === '') {
+            $errors[] = 'Le titre est obligatoire.';
+        }
+
+        if (!$errors) {
+            $ownerId = (int)$_SESSION['user']['id'];
+
+            if (quizCreate($ownerId, $title, $description)) {
+                header('Location: ' . APP_BASE . '/company');
+                exit;
+            }
+
+            $errors[] = 'Erreur lors de la création du quiz.';
+        }
     }
 
-    $companyId = (int) $_GET['id'];
-    $pdo       = getDatabase();
-
-    $stmt = $pdo->prepare('SELECT * FROM companies WHERE id = :id');
-    $stmt->bindValue(':id', $companyId, PDO::PARAM_INT);
-    $stmt->execute();
-    $company = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$company) {
-        http_response_code(404);
-        echo 'Entreprise introuvable.';
-        return;
-    }
+    require __DIR__ . '/../View/company/survey_create.php';
 }
+
 function companyDeleteController(): void
 {
     requireCompanyLogin();
