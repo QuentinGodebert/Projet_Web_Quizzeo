@@ -27,7 +27,7 @@ function quizStartController(): void
         return;
     }
 
-    $questions = questionFindByQuiz((int) $quiz['id']);
+    $questions = quizFindById((int) $quiz['id']);
 
     $choicesByQuestion = [];
     foreach ($questions as $question) {

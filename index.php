@@ -24,8 +24,7 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($uri === '/') {
     publicHomeController();
-}
- elseif ($uri === '/login' || $uri === '/login.php') {
+} elseif ($uri === '/login' || $uri === '/login.php') {
     loginAction();
 } elseif ($uri === '/register' || $uri === '/register.php') {
     registerAction();
@@ -33,17 +32,14 @@ if ($uri === '/') {
     logout();
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
-    } elseif ($uri === '/admin/toggle-user') {
-    toggleUserStatusAction();
-    } elseif ($uri === '/admin' || $uri === '/admin.php') {
-    adminDashboardAction();
-
 } elseif ($uri === '/admin/toggle-user') {
     toggleUserStatusAction();
-
+} elseif ($uri === '/admin' || $uri === '/admin.php') {
+    adminDashboardAction();
+} elseif ($uri === '/admin/toggle-user') {
+    toggleUserStatusAction();
 } elseif ($uri === '/admin/toggle-quiz') {
     toggleQuizStatusAction();
-
 } elseif ($uri === '/admin' || $uri === '/admin.php') {
     adminDashboardAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
@@ -58,9 +54,7 @@ if ($uri === '/') {
     companyQuizLaunchController();
 } elseif ($uri === '/school/quiz_launch') {
     schoolQuizLaunchController();
-}
-
- elseif ($uri === '/school' || $uri === '/school.php') {
+} elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/school/quiz_create') {
     schoolQuizCreateController();

@@ -111,8 +111,6 @@ function updateQuestion(int $id, int $quizId, string $intitule, int $points): bo
         ':id'       => $id,
         ':quiz_id'  => $quizId,
     ]);
-
-    return $stmt->rowCount() > 0;
 }
 function deleteQuestion(int $id, int $quizId): bool
 {

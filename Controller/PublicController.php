@@ -15,8 +15,6 @@ function requireQuizUserLogin(): void
     }
 }
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../config/database.php';
 
 function publicHomeController(): void
