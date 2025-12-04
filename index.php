@@ -4,6 +4,7 @@ require_once __DIR__ . '/Controller/AdminController.php';
 require_once __DIR__ . '/Controller/AuthController.php';
 require_once __DIR__ . '/Controller/CompanyController.php';
 require_once __DIR__ . '/Controller/PublicController.php';
+require_once __DIR__ . '/Controller/SchoolController.php';
 require_once __DIR__ . '/Controller/QuizController.php';
 require_once __DIR__ . '/Controller/UserController.php';
 
@@ -35,7 +36,8 @@ if ($uri === '/') {
     toggleQuizStatusAction();
 } elseif ($uri === '/company' || $uri === '/company.php') {
     companyDashboardAction();
-} elseif ($uri === '/school' || $uri === '/school.php') {
+
+    } elseif ($uri === '/school' || $uri === '/school.php') {
     schoolDashboardController();
 } elseif ($uri === '/user' || $uri === '/user.php') {
     userDashboardController();
