@@ -53,27 +53,36 @@ function companyProfileController(): void
         return;
     }
 }
-function companyCreateController()
+function companyCreateController(): void
 {
-    require_once __DIR__ . '/../Model/quizModel.php';
-    $pdo = getDatabase();
+    if (empty($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'company') {
+        header('Location: ' . APP_BASE . '/login');
+        exit;
+    }
 
-    $error = '';
-    $owner_id = $_SESSION['user']['id'] ?? null;
+    $errors = [];
+    $title = '';
+    $description = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
+        $owner_id = (int)($_SESSION['user']['id'] ?? 0);
 
-        if ($owner_id && $title !== '' && $description !== '') {
-            if (createQuiz($pdo, $title, $description, $owner_id)) {
-                header('Location: ' . APP_BASE . '/company/dashboard');
+        if ($title === '') {
+            $errors[] = 'Le titre est obligatoire.';
+        }
+        if ($description === '') {
+            $errors[] = 'La description est obligatoire.';
+        }
+
+        if (!$errors && $owner_id > 0) {
+            if (quizCreate($owner_id, $title, $description)) {
+                header('Location: ' . APP_BASE . '/company');
                 exit;
             } else {
-                $error = "Erreur lors de la création du quiz.";
+                $errors[] = 'Erreur lors de la création du quiz.';
             }
-        } else {
-            $error = "Veuillez remplir tous les champs.";
         }
     }
 

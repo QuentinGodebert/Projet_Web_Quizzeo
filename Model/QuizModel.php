@@ -148,5 +148,5 @@ function quizCreate(int $ownerId, string $title, ?string $description): bool
     $pdo = getDatabase();
 
 
-    return createQuiz($pdo, $title, $description ?? '', $ownerId);
+    return createQuiz($ownerId, $title, $description ?? '') !== null;
 }
