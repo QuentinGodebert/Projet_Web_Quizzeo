@@ -52,7 +52,6 @@ function companyProfileController(): void
         return;
     }
 
-    require __DIR__ . '/../View/company/profile.php';
 }
 function companyCreateController(): void
 {
