@@ -5,8 +5,6 @@ declare(strict_types=1);
 $pageTitle = 'Tableau de bord utilisateur';
 require __DIR__ . '/../layout/header.php';
 
-require_once __DIR__ . '/../database.php';
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -51,30 +49,30 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php else: ?>
         <table class="table">
             <thead>
-            <tr>
-                <th>Quiz</th>
-                <th>Nombre de tentatives</th>
-                <th>Dernier score</th>
-                <th>Historique</th>
-            </tr>
+                <tr>
+                    <th>Quiz</th>
+                    <th>Nombre de tentatives</th>
+                    <th>Dernier score</th>
+                    <th>Historique</th>
+                </tr>
             </thead>
             <tbody>
-            <?php foreach ($results as $row): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['quiz_title'] ?? 'Quiz inconnu', ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?= (int)$row['total_attempts']; ?></td>
-                    <td>
-                        <?= $row['last_score'] !== null
-                            ? htmlspecialchars((string)$row['last_score'], ENT_QUOTES, 'UTF-8')
-                            : 'N/A'; ?>
-                    </td>
-                    <td>
-                        <a href="/user/attempt_history?quiz_id=<?= urlencode((string)$row['quiz_id']); ?>">
-                            Voir l’historique
-                        </a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+                <?php foreach ($results as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['quiz_title'] ?? 'Quiz inconnu', ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?= (int)$row['total_attempts']; ?></td>
+                        <td>
+                            <?= $row['last_score'] !== null
+                                ? htmlspecialchars((string)$row['last_score'], ENT_QUOTES, 'UTF-8')
+                                : 'N/A'; ?>
+                        </td>
+                        <td>
+                            <a href="/user/attempt_history?quiz_id=<?= urlencode((string)$row['quiz_id']); ?>">
+                                Voir l’historique
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>
