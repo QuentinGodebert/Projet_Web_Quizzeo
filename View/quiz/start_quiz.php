@@ -29,8 +29,12 @@ $quizDescription = $quiz['description'] ?? '';
     <?php if (empty($questions)): ?>
         <p>Aucune question n’est disponible pour ce quiz.</p>
     <?php else: ?>
-        <form method="post" action="index.php?controller=public&action=submitQuiz">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($quiz['publicToken'] ?? ''); ?>">
+        <form method="post" action="/quiz/start">
+    <input
+        type="hidden"
+        name="token"
+        value="<?= htmlspecialchars($quiz['access_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+    >  
 
             <?php foreach ($questions as $questionIndex => $question): ?>
                 <?php
