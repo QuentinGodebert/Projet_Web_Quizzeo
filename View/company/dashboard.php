@@ -78,7 +78,10 @@ require __DIR__ . '/../layout/header.php';
                                     </a>
                                 
                                 <?php endif; ?>
-                                <a href="https://github.com/EvannCarnot/Quizzeo_projet.git" Lien de partage ></a>
+                                <a href="https://github.com/EvannCarnot/Quizzeo_projet.git" target="_blank" rel="noopener">
+    Lien de partage
+</a>
+
                             </td>
                         </tr>
                     <?php endforeach; ?>
