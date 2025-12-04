@@ -76,6 +76,10 @@ if ($uri === '/') {
     companyQuestionEditController();
 } elseif ($uri === '/company/question_delete') {
     companyQuestionDeleteController();
+} elseif ($uri === '/quiz/start') {
+    startQuizController();
+} elseif ($uri === '/quiz/questions') {
+    quizQuestionController();
 } else {
     http_response_code(404);
     echo 'Page non trouvée : ' . htmlspecialchars($uri);
