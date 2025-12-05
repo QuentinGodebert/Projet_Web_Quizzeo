@@ -14,8 +14,8 @@ Quizzeo est une application web de gestion de quiz avec plusieurs rôles :
 1. Copier le projet dans le dossier web (par ex. `C:\xampp\htdocs\Projet_Web_Quizzeo`).
 2. Importer le fichier SQL :
 
-   - Ouvrir phpMyAdmin  
-   - Créer une base de données (ex. `quizzeo`)  
+   - Ouvrir phpMyAdmin et VS Code
+   - Créer une base de données (ex. `quizzeo`)
    - Importer `Database/schema.sql`
 
 3. Configurer la connexion à la BDD dans :
@@ -46,10 +46,10 @@ Après connexion, le bouton **“Tableau de bord”** t’envoie automatiquement
 ### a) Admin – `/admin`
 
 - Voir la liste de tous les **utilisateurs**
-  - Colonne *Statut* : ✅ Actif / ❌ Inactif  
+  - Colonne _Statut_ : ✅ Actif / ❌ Inactif
   - Bouton **Activer / Désactiver** pour bloquer un compte
 - Voir la liste de tous les **quiz**
-  - Colonne *Actif* : ✅ Oui / ❌ Non  
+  - Colonne _Actif_ : ✅ Oui / ❌ Non
   - Bouton **Activer / Désactiver** pour rendre un quiz disponible ou non
 
 ### b) École – `/school`
@@ -105,7 +105,7 @@ Adapter selon ce que tu as dans ta base, par exemple :
 - **Company** : `company@example.com` / `motdepasse`
 - **User** : `user@example.com` / `motdepasse`
 
-*(À compléter avec tes vrais comptes de démo.)*
+_(À compléter avec tes vrais comptes de démo.)_
 
 ---
 
@@ -114,6 +114,5 @@ Si quelque chose ne fonctionne pas (404 ou erreur PHP), vérifier en priorité :
 - la route correspondante dans `index.php`
 - le lien dans la vue (`href` / `action`)
 - la fonction appelée dans le bon contrôleur.
-
 
 https://github.com/EvannCarnot/Quizzeo_projet.git
