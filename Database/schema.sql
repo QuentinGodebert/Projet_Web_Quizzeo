@@ -70,3 +70,10 @@ CREATE TABLE `quiz_attempt_answers` (
 	FOREIGN KEY (`question_id`) REFERENCES `questions`(`id`),
     FOREIGN KEY (`choice_id`) REFERENCES `choices`(`id`)
 );
+
+SELECT * FROM users;
+SELECT * FROM quizzes;
+SELECT * FROM questions;
+SELECT * FROM choices;
+SELECT * FROM quiz_attempts;
+SELECT * FROM quiz_attempt_answers;
